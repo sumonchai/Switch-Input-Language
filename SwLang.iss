@@ -32,10 +32,10 @@ Filename: "{app}\swlang.exe"
 ; and HKEY_LOCAL_MACHINE. The flags tell it to always delete the
 ; "My Program" keys upon uninstall, and delete the "My Company" keys
 ; if there is nothing left in them.
-Root: HKCU; Subkey: "Software\LJ TECHNOLOGY"; Flags: uninsdeletekeyifempty
-Root: HKCU; Subkey: "Software\LJ TECHNOLOGY\Switch Input Language"; Flags: uninsdeletekey
+;Root: HKCU; Subkey: "Software\LJ TECHNOLOGY"; Flags: uninsdeletekeyifempty
+;Root: HKCU; Subkey: "Software\LJ TECHNOLOGY\Switch Input Language"; Flags: uninsdeletekey
 ;Root: HKLM; Subkey: "Software\LJ TECHNOLOGY"; Flags: uninsdeletekeyifempty
-Root: HKLM64; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Switch Input Language"; ValueData: """{app}\InputLang.exe"""; Flags: uninsdeletevalue
+;Root: HKLM64; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Switch Input Language"; ValueData: """{app}\InputLang.exe"""; Flags: uninsdeletevalue
 Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Switch Input Language"; ValueData: """{app}\InputLang.exe"""; Flags: uninsdeletevalue
 
 
