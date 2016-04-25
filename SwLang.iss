@@ -1,7 +1,8 @@
 
 [Setup]
+PrivilegesRequired=admin
 AppName=Switch Input Language
-AppVersion=0.1 Beta
+AppVersion=0.2 Beta
 DefaultDirName={pf}\Switch Input Language
 DefaultGroupName=Switch Input Language
 UninstallDisplayIcon={app}\swlang.exe
@@ -9,7 +10,6 @@ UninstallDisplayIcon={app}\swlang.exe
 InfoBeforeFile=Readme.txt
 Compression=lzma
 SolidCompression=yes
-PrivilegesRequired=admin
 
 
 [Files]
