@@ -6,7 +6,7 @@
 ;# = WinKey (Meta)
 ;+ = Shift</code>
 
-HotKeySet("!{Space}", "change") ;Registers Alt + Space
+HotKeySet("`", "change") ;Registers Alt + Space
 
 ;Main loop
 While 1
