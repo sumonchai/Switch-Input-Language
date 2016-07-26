@@ -6,3 +6,6 @@
 ####TOOLS
 Inno Setup
 http://www.jrsoftware.org/isdl.php
+
+Autoit
+[www.autoitscript.com](https://www.autoitscript.com/site/autoit/downloads/)
