@@ -7,7 +7,6 @@
 ;+ = Shift</code>
 HotKeySet("`", "change") ;Registers Alt + Space
 HotKeySet("_", "change") ;Registers Alt + Space
-ToolTip("This is a tooltip", 0, 0)
 #NoTrayIcon
 Opt("TrayMenuMode",1)   ; Default tray menu items (Script Paused/Exit) will not be shown.
 Opt("TrayAutoPause", 0 )
