@@ -3,7 +3,6 @@
 ;# = WinKey (Meta)
 ;+ = Shift</code>
 HotKeySet("`", "change")
-HotKeySet("_", "change")
 #NoTrayIcon
 Opt("TrayMenuMode",1)
 Opt("TrayAutoPause", 0 )
