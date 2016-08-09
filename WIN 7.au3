@@ -11,7 +11,7 @@ HotKeySet("`", "change") ;Registers Alt + Space
 Opt("TrayMenuMode",1)   ; Default tray menu items (Script Paused/Exit) will not be shown.
 Opt("TrayAutoPause", 0 )
 TraySetState()
-TraySetToolTip("Switch Input Language")
+TraySetToolTip("Switch Input Language 1.2")
 
 $aboutitem  = TrayCreateItem("เกี่ยวกับโปรแกรม")
 TrayCreateItem("")
