@@ -5,14 +5,14 @@
 ![Set Key](ALT+Shift.png)
 
 ### Download
-[Switch Input Language WIN 7-10](https://github.com/sumonchai/Switch-Input-Language/releases/tag/1.1)
+[Switch Input Language WIN 7-10](https://github.com/sumonchai/Switch-Input-Language/releases)
 
 
 # Switch Input Language *windows 10*
 ### Support Key: WIN + Space
 
 ### Download
-[Switch Input Language WIN 10](https://github.com/sumonchai/Switch-Input-Language/releases/tag/1.0)
+[Switch Input Language WIN 10](https://github.com/sumonchai/Switch-Input-Language/releases)
 
 
 ### ขอดีอีกอย่าง เราจะได้ ~ กลับมาใช้งาน
