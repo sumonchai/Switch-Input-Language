@@ -1,7 +1,7 @@
 [Setup]
 AppName=Switch Input Language
 AppId=Switch Input Language
-AppVersion=1.0 beta
+AppVersion=1.1
 AppPublisher=jrsoftware.org
 AppPublisherURL=https://github.com/sumonchai/Switch-Input-Language
 AppSupportURL=https://github.com/sumonchai/Switch-Input-Language

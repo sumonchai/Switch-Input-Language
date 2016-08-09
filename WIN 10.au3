@@ -7,7 +7,7 @@ HotKeySet("`", "change")
 Opt("TrayMenuMode",1)
 Opt("TrayAutoPause", 0 )
 TraySetState()
-TraySetToolTip("Switch Input Language")
+TraySetToolTip("Switch Input Language 1.2")
 
 $aboutitem  = TrayCreateItem("เกี่ยวกับโปรแกรม")
 TrayCreateItem("")
