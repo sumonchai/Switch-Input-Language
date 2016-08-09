@@ -6,7 +6,7 @@
 ;# = WinKey (Meta)
 ;+ = Shift</code>
 HotKeySet("`", "change") ;Registers Alt + Space
-HotKeySet("_", "change") ;Registers Alt + Space
+;HotKeySet("_", "change") ; FIX BUG #1
 #NoTrayIcon
 Opt("TrayMenuMode",1)   ; Default tray menu items (Script Paused/Exit) will not be shown.
 Opt("TrayAutoPause", 0 )
