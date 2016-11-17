@@ -56,3 +56,4 @@ Callback(hWnd, Notification, wParam, lParam, RefData) {
         Return True
     }
 }
+OGui Add, Button, gShowAbout x8 y430 w76 h23, A&bout

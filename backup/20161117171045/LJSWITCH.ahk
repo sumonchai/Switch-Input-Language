@@ -21,11 +21,11 @@ Menu, Tray, NoStandard
 ;Menu, Tray, Add, High Priority , HighPriority 
 ;Menu, Tray, Add, Normal Priority, NormalPriority
 ;Menu, Tray, Default, RealTime Priority
-Menu, Tray, Disable, RealTime Priority
-Menu, Tray, Add 
-Menu, Tray, Add, Reload, Reload
-Menu, Tray, Add, About, ShowAbout
-Menu, Tray, Add, Exit, Exit 
+;Menu, Tray, Disable, RealTime Priority
+;Menu, Tray, Add 
+;Menu, Tray, Add, Reload, Reload
+;Menu, Tray, Add, About, ShowAbout
+;Menu, Tray, Add, Exit, Exit 
 Menu,Tray,Icon, Util\key.ico
 
 Menu, Tray, Add, Minimize to tray,GuiMinimizeToTray
@@ -138,7 +138,7 @@ Restore() {
 	;Menu, Tray, Delete, Exit
 	;Menu, Tray, Add, Exit, GuiClose
 	Gui, +Resize +MinSize
-	Gui, Add, Text, x10 y10 w40 h20 , Search:
+	;Gui, Add, Text, x10 y10 w40 h20 vSearchLbl, Search:
 	Gui, Show, w720 h540, %AppName%
 }
 

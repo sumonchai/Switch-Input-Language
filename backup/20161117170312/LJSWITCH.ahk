@@ -21,18 +21,19 @@ Menu, Tray, NoStandard
 ;Menu, Tray, Add, High Priority , HighPriority 
 ;Menu, Tray, Add, Normal Priority, NormalPriority
 ;Menu, Tray, Default, RealTime Priority
-Menu, Tray, Disable, RealTime Priority
-Menu, Tray, Add 
-Menu, Tray, Add, Reload, Reload
-Menu, Tray, Add, About, ShowAbout
-Menu, Tray, Add, Exit, Exit 
+;Menu, Tray, Disable, RealTime Priority
+;Menu, Tray, Add 
+;Menu, Tray, Add, Reload, Reload
+;Menu, Tray, Add, About, ShowAbout
+;Menu, Tray, Add, Exit, Exit 
 Menu,Tray,Icon, Util\key.ico
 
-Menu, Tray, Add, Minimize to tray,GuiMinimizeToTray
-Menu, Tray, Default, Minimize to tray
+;Menu, Tray, Add, Minimize to tray, ;
+Menu, Tray, Default, WinHide
 Menu, Tray, Click, 2
-;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to minimiz
+;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to minimize
 return
+
 
 SC029::
 ;Send {LWIN down}{space};
@@ -118,9 +119,9 @@ ShowAbout() {
 GuiMinimizeToTray() {
 	;Gui +lastfound
 	WinHide
-	Menu, Tray, Delete, Minimize to tray
-	Menu, Tray, Add, Restore, Restore
-	Menu, Tray, Default, Restore
+	;Menu, Tray, Delete, Minimize to tray
+	;Menu, Tray, Add, Restore, Restore
+	;Menu, Tray, Default, Restore
 	;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to restore
 	;Menu, Tray, Delete, Exit
 	;Menu, Tray, Add, Exit, GuiClose
@@ -137,8 +138,8 @@ Restore() {
 	;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to minimize
 	;Menu, Tray, Delete, Exit
 	;Menu, Tray, Add, Exit, GuiClose
-	Gui, +Resize +MinSize
-	Gui, Add, Text, x10 y10 w40 h20 , Search:
+	;Gui, +Resize +MinSize
+	;Gui, Add, Text, x10 y10 w40 h20 vSearchLbl, Search:
 	Gui, Show, w720 h540, %AppName%
 }
 

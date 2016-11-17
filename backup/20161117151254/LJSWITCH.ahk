@@ -1,4 +1,4 @@
-﻿#NoEnv
+#NoEnv
 #Warn
 #InstallKeybdHook
 #SingleInstance force
@@ -15,24 +15,21 @@ Global AppName := "LJ Switch Input Lang "
     , Text
     , Content
 
-;Menu, Tray, Tip, %AppName%  v%Version%
+
+Menu, Tray, Tip, %AppName%  v%Version%
 Menu, Tray, NoStandard
-;Menu, Tray, Add, RealTime Priority, RealTimePriority 
-;Menu, Tray, Add, High Priority , HighPriority 
-;Menu, Tray, Add, Normal Priority, NormalPriority
-;Menu, Tray, Default, RealTime Priority
+Menu, Tray, Add, RealTime Priority, RealTimePriority 
+Menu, Tray, Add, High Priority , HighPriority 
+Menu, Tray, Add, Normal Priority, NormalPriority
+Menu, Tray, Default, RealTime Priority
 Menu, Tray, Disable, RealTime Priority
 Menu, Tray, Add 
 Menu, Tray, Add, Reload, Reload
+;Menu, Tray, Add, Update, IsUpdated
 Menu, Tray, Add, About, ShowAbout
 Menu, Tray, Add, Exit, Exit 
-Menu,Tray,Icon, Util\key.ico
-
-Menu, Tray, Add, Minimize to tray,GuiMinimizeToTray
-Menu, Tray, Default, Minimize to tray
-Menu, Tray, Click, 2
-;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to minimiz
-return
+Menu,Tray,Icon, %A_ScriptDir%\Util\key.ico
+;Gui Add, Button, gShowAbout x8 y430 w76 h23, A&bout
 
 SC029::
 ;Send {LWIN down}{space};
@@ -42,7 +39,6 @@ SC029::
 Send {ALT down}{shift}
 Send {ALT up}
 return 
-
 
 NormalPriority:
 Process, Priority, , Normal
@@ -73,15 +69,15 @@ ShowAbout() {
 	Static URL := "https://github.com/sumonchai/Switch-Input-Language/"
 	Local AboutText := 
     (LTrim
-    " จัดทำเพื่อแก้ไขปัญหาการเปลี่ยนภาษาใน Windows ด้วย ~ [ตัวหนอน]
-	     โดยการแก้ไขด้วย Autohotkey 
+    "Developers and corporations all over the world use MagicBox Factory
+    to quickly and efficiently create professional message boxes.
 
-			รองรับกดปุ่ม ~  [ตัวหนอน]
-			รองรับกดปุ่ม CapsLock    
+    MagicBox is able to generate the code for a variety of message boxes,
+    including the sophisticated task dialog introduced in Windows Vista.
 
-			Version " . Version . "
+        Version " . Version . "
 
-			Github project page:
+    SourceForge project page:
     "
     )
 	
@@ -93,7 +89,7 @@ ShowAbout() {
 		Gui Add, TreeView, % "x-1 y" . (A_Index - 1) . " w437 h1 Background" . Colors[A_Index]
 	}
 	
-	Gui Add, Picture, x11 y12 w32 h32 BackgroundTrans, Util\key.ico
+	Gui Add, Picture, x11 y12 w32 h32 BackgroundTrans, Icons\MagicBox.ico
 	Gui Font, s13 c0x003399, Tahoma
 	Gui Add, Text, x51 y12 w354 h32 +0x200 BackgroundTrans, %AppName%
 	Gui Font
@@ -113,35 +109,6 @@ ShowAbout() {
 	Gui Show, w435 h245, About
 	ControlFocus Button1, About
 }
-
-
-GuiMinimizeToTray() {
-	;Gui +lastfound
-	WinHide
-	Menu, Tray, Delete, Minimize to tray
-	Menu, Tray, Add, Restore, Restore
-	Menu, Tray, Default, Restore
-	;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to restore
-	;Menu, Tray, Delete, Exit
-	;Menu, Tray, Add, Exit, GuiClose
-    ;TrayTip, WhatsApp AHK, I'm still around and will keep running in the background.
-}
-Restore() {
-	;Gui +lastfound
-	WinShow
-	WinRestore
-	WinActivate
-	;Menu, Tray, Delete, Restore
-	Menu, Tray, Add, Minimize to tray, GuiMinimizeToTray
-	Menu, Tray, Default, Minimize to tray
-	;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to minimize
-	;Menu, Tray, Delete, Exit
-	;Menu, Tray, Add, Exit, GuiClose
-	Gui, +Resize +MinSize
-	Gui, Add, Text, x10 y10 w40 h20 , Search:
-	Gui, Show, w720 h540, %AppName%
-}
-
 
 AboutEscape:
 Gui MagicBox: -Disabled

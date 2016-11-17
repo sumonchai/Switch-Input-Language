@@ -21,11 +21,11 @@ Menu, Tray, NoStandard
 ;Menu, Tray, Add, High Priority , HighPriority 
 ;Menu, Tray, Add, Normal Priority, NormalPriority
 ;Menu, Tray, Default, RealTime Priority
-Menu, Tray, Disable, RealTime Priority
-Menu, Tray, Add 
-Menu, Tray, Add, Reload, Reload
-Menu, Tray, Add, About, ShowAbout
-Menu, Tray, Add, Exit, Exit 
+;Menu, Tray, Disable, RealTime Priority
+;Menu, Tray, Add 
+;Menu, Tray, Add, Reload, Reload
+;Menu, Tray, Add, About, ShowAbout
+;Menu, Tray, Add, Exit, Exit 
 Menu,Tray,Icon, Util\key.ico
 
 Menu, Tray, Add, Minimize to tray,GuiMinimizeToTray

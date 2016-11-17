@@ -15,23 +15,28 @@ Global AppName := "LJ Switch Input Lang "
     , Text
     , Content
 
-;Menu, Tray, Tip, %AppName%  v%Version%
+
+Menu, Tray, Tip, %AppName%  v%Version%
 Menu, Tray, NoStandard
-;Menu, Tray, Add, RealTime Priority, RealTimePriority 
-;Menu, Tray, Add, High Priority , HighPriority 
-;Menu, Tray, Add, Normal Priority, NormalPriority
-;Menu, Tray, Default, RealTime Priority
+Menu, Tray, Add, RealTime Priority, RealTimePriority 
+Menu, Tray, Add, High Priority , HighPriority 
+Menu, Tray, Add, Normal Priority, NormalPriority
+Menu, Tray, Default, RealTime Priority
 Menu, Tray, Disable, RealTime Priority
 Menu, Tray, Add 
 Menu, Tray, Add, Reload, Reload
+;Menu, Tray, Add, Update, IsUpdated
 Menu, Tray, Add, About, ShowAbout
 Menu, Tray, Add, Exit, Exit 
 Menu,Tray,Icon, Util\key.ico
 
-Menu, Tray, Add, Minimize to tray,GuiMinimizeToTray
-Menu, Tray, Default, Minimize to tray
+Menu, Tray, Add, Restore, Restore
+Menu, Tray, default, Restore
 Menu, Tray, Click, 2
-;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to minimiz
+
+Gui, +Resize +MinSize
+Gui, Add, Text, x10 y10 w40 h20 vSearchLbl, Search:
+Gui, Show, w720 h540, %AppName%
 return
 
 SC029::
@@ -43,6 +48,16 @@ Send {ALT down}{shift}
 Send {ALT up}
 return 
 
+GuiSize:
+if (A_EventInfo = 1)
+	WinHide
+return
+
+Restore:
+gui +lastfound
+WinShow
+WinRestore
+return
 
 NormalPriority:
 Process, Priority, , Normal
@@ -113,35 +128,6 @@ ShowAbout() {
 	Gui Show, w435 h245, About
 	ControlFocus Button1, About
 }
-
-
-GuiMinimizeToTray() {
-	;Gui +lastfound
-	WinHide
-	Menu, Tray, Delete, Minimize to tray
-	Menu, Tray, Add, Restore, Restore
-	Menu, Tray, Default, Restore
-	;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to restore
-	;Menu, Tray, Delete, Exit
-	;Menu, Tray, Add, Exit, GuiClose
-    ;TrayTip, WhatsApp AHK, I'm still around and will keep running in the background.
-}
-Restore() {
-	;Gui +lastfound
-	WinShow
-	WinRestore
-	WinActivate
-	;Menu, Tray, Delete, Restore
-	Menu, Tray, Add, Minimize to tray, GuiMinimizeToTray
-	Menu, Tray, Default, Minimize to tray
-	;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to minimize
-	;Menu, Tray, Delete, Exit
-	;Menu, Tray, Add, Exit, GuiClose
-	Gui, +Resize +MinSize
-	Gui, Add, Text, x10 y10 w40 h20 , Search:
-	Gui, Show, w720 h540, %AppName%
-}
-
 
 AboutEscape:
 Gui MagicBox: -Disabled
