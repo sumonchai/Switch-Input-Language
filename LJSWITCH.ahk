@@ -15,12 +15,12 @@ Global AppName := "LJ Switch Input Lang "
     , Text
     , Content
 
-;Menu, Tray, Tip, %AppName%  v%Version%
+Menu, Tray, Tip, %AppName%  v%Version%
 Menu, Tray, NoStandard
-;Menu, Tray, Add, RealTime Priority, RealTimePriority 
-;Menu, Tray, Add, High Priority , HighPriority 
-;Menu, Tray, Add, Normal Priority, NormalPriority
-;Menu, Tray, Default, RealTime Priority
+Menu, Tray, Add, RealTime Priority, RealTimePriority 
+Menu, Tray, Add, High Priority , HighPriority 
+Menu, Tray, Add, Normal Priority, NormalPriority
+Menu, Tray, Default, RealTime Priority
 Menu, Tray, Disable, RealTime Priority
 Menu, Tray, Add 
 Menu, Tray, Add, Reload, Reload
@@ -28,8 +28,8 @@ Menu, Tray, Add, About, ShowAbout
 Menu, Tray, Add, Exit, Exit 
 Menu,Tray,Icon, Util\key.ico
 
-Menu, Tray, Add, Minimize to tray,GuiMinimizeToTray
-Menu, Tray, Default, Minimize to tray
+;Menu, Tray, Add, Minimize to tray,GuiMinimizeToTray
+;Menu, Tray, Default, Minimize to tray
 Menu, Tray, Click, 2
 ;Menu, Tray, Tip, WhatsApp AHK`nDouble-click to minimiz
 return
