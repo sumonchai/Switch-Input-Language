@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<settings>
+	<fonts>
+		<name>Zenburn_dark_with_maestrith</name>
+		<author>Run1e and maestrith</author>
+		<font background="3158064" bold="0" color="16777215" font="Consolas" size="10" style="5" italic="0" strikeout="0" underline="0"></font>
+		<font background="3158064" style="33" color="16777215" font="Consolas" bold="0" italic="0"></font>
+		<font style="0" color="12632256"></font>
+		<font style="1" color="8363903" bold="0" italic="1" size="10" strikeout="0" underline="0"></font>
+		<font style="2" color="8421616"></font>
+		<font style="3" color="8816334"></font>
+		<font style="4" color="16777215"></font>
+		<font style="11" color="16744576" bold="0" italic="0" size="10" strikeout="0" underline="0"></font>
+		<font style="13" color="255" background="0"></font>
+		<font style="15" color="12110995"></font>
+		<font style="17" color="7843024"></font>
+		<font style="18" color="13617276"></font>
+		<font style="19" color="16758590"></font>
+		<font style="21" color="9749720"></font>
+		<font style="22" color="14732901"></font>
+		<font style="37" color="4227327"></font>
+		<font bool="1" code="2068" color="32896"></font>
+		<font code="2069" color="16777215"></font>
+		<font code="2098" color="4473924"></font>
+		<font code="2601" color="8421504"></font>
+		<font style="20" color="16759366"></font>
+		<font style="24" color="15458669"></font>
+		<font style="23" color="8241367"></font>
+		<font style="9" color="11184810"></font>
+		<font style="8" color="9737364"></font>
+		<font style="10" color="255" background="0"></font>
+		<font style="16" color="5741559"></font>
+		<font style="55" color="4227327"></font>
+		<font style="56" color="8421440"></font>
+		<font style="57" color="16744576"></font>
+		<font style="58" color="8388863"></font>
+		<font style="41" color="16776960"></font>
+		<font style="40" color="65408"></font>
+		<font style="42" color="0" background="255"></font>
+		<font background="8388863" style="30"></font>
+		<font background="4227072" style="31"></font>
+		<font code="2188" value="1"></font>
+		<font background="65535" style="48"></font>
+		<custom control="msctls_statusbar321" gui="1" bold="0" color="0" font="Comic Sans MS" italic="0" size="10" strikeout="0" underline="0"></custom>
+		<font style="34" bold="0" color="8388863" font="Consolas" italic="0" size="10" strikeout="0" underline="0"></font>
+		<font style="97" color="8421504"></font>
+		<font style="99" color="16744576"></font>
+	</fonts>
+	<options Manual_Continuation_Line="1" Full_Auto_Indentation="1" Focus_Studio_On_Debug_Breakpoint="1" Word_Wrap_Indicators="1" Context_Sensitive_Help="1" Auto_Complete="1" Auto_Complete_In_Quotes="1" Auto_Complete_While_Tips_Are_Visible="1"></options>
+	<filetypes>
+		<type>ahk</type>
+		<type>txt</type>
+		<type>xml</type>
+		<type>htm</type>
+		<type>html</type>
+	</filetypes>
+	<autoadd altgr="0">
+		<key add="&quot;" trigger="&quot;"></key>
+		<key add="'" trigger="'"></key>
+		<key add=")" trigger="("></key>
+		<key add="]" trigger="["></key>
+		<key add="}" trigger="{"></key></autoadd>
+	<autodelete>
+		<key close="&quot;" open="&quot;"></key>
+		<key close="%" open="%"></key>
+		<key close="'" open="'"></key>
+		<key close=")" open="("></key>
+		<key close="&gt;" open="&lt;"></key>
+		<key close="]" open="&lt;^&gt;["></key>
+		<key close="}" open="&lt;^&gt;{"></key>
+		<key close="]" open="["></key>
+		<key close="}" open="{"></key>
+	</autodelete>
+	<gui zoom="0">
+		<position window="1" max="0"></position></gui>
+	<open><file>D:\LJ\LANG\LJSWITCH.ahk</file>
+	</open>
+</settings>
