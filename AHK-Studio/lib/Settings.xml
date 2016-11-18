@@ -71,8 +71,21 @@
 		<key close="]" open="["></key>
 		<key close="}" open="{"></key>
 	</autodelete>
-	<gui zoom="0">
-		<position window="1" max="0"></position></gui>
+	<gui zoom="5">
+		<position window="1" max="1" lastw="0" lastah=""></position>
+		<position window="RCMEditor">x552 y300 w800 h400</position>
+		<position window="Settings">x552 y200 w800 h600</position>
+		<position window="5">x752 y317 w400 h367</position>
+		<position window="30">x854 y409 w206 h193</position></gui>
 	<open><file>D:\LJ\LANG\LJSWITCH.ahk</file>
+		<file>d:\Desktop\test.ahk</file>
+		<file>d:\Desktop\111.ahk</file>
 	</open>
+	<previous_scripts>
+		<script>Untitled.ahk</script>
+	</previous_scripts>
+	<search>
+		<find acdc="0" allfiles="0" cs="0" daioc="0" gr="0" regex="0" sort="0"></find>
+	</search>
+	<findreplace cs="0" currentsel="0" greed="0" Include="0" ml="0" regex="0"></findreplace>
 </settings>

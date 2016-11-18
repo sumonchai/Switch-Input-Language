@@ -1,5 +1,9 @@
 <?xml version="1.0"?>
 <positions>
-	<file file="Untitled.ahk" end="257" scroll="0" start="257"></file>
-	<file file="D:\LJ\LANG\LJSWITCH.ahk" end="0" scroll="0" start="0"></file>
+	<file file="Untitled.ahk" end="436" scroll="0" start="436"></file>
+	<file file="D:\LJ\LANG\LJSWITCH.ahk" end="1648" scroll="42" start="1648" findreplace="HaloExecution"></file>
+	<file file="d:\Desktop\test.ahk" end="1799" scroll="18" start="1799"></file>
+	<main file="D:\LJ\LANG\LJSWITCH.ahk" search="Execution"></main>
+	<file file="d:\Desktop\111.ahk" end="420" scroll="0" start="316"></file>
+	<file file="" end="1756" scroll="65" start="1756" fold="170,181"></file>
 </positions>

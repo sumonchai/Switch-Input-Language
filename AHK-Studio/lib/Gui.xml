@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <gui>
-	<win win="1" pos="x313 y76 w1246 h839">
-		<control h="637" w="1001" x="0" y="0" type="Scintilla" file="D:\LJ\LANG\LJSWITCH.ahk" hwnd="460054" ra="918924" ba="1443022" last="1"></control>
-		<control h="359" w="245" x="1001" y="0" lp="0.803371" type="Project Explorer" hwnd="918924" ba="722090"></control>
-		<control h="436" w="245" x="1001" y="359" lp="0.803371" tp="0.45145019" type="Code Explorer" hwnd="722090"></control>
-		<control hwnd="1443022" type="Debug" h="158" w="1001" x="0" y="637" tp="0.80075662" ra="722090"></control></win>
+	<win win="1" pos="x313 y76 w1246 h839" max="1">
+		<control h="763" w="1542" x="0" y="0" type="Scintilla" file="D:\LJ\LANG\LJSWITCH.ahk" hwnd="5310574" ra="5048390" ba="1443236" last="1"></control>
+		<control h="430" w="378" x="1542" y="0" lp="0.803371" type="Project Explorer" hwnd="5048390" ba="329938"></control>
+		<control h="523" w="378" x="1542" y="430" lp="0.803371" tp="0.45145019" type="Code Explorer" hwnd="329938"></control>
+		<control hwnd="1443236" type="Debug" h="190" w="1542" x="0" y="763" tp="0.80075662" ra="329938"></control></win>
 </gui>
