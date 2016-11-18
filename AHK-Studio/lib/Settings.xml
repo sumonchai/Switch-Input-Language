@@ -71,7 +71,7 @@
 		<key close="]" open="["></key>
 		<key close="}" open="{"></key>
 	</autodelete>
-	<gui zoom="5">
+	<gui zoom="3">
 		<position window="1" max="1" lastw="0" lastah=""></position>
 		<position window="RCMEditor">x552 y300 w800 h400</position>
 		<position window="Settings">x552 y200 w800 h600</position>

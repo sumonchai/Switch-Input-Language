@@ -58,11 +58,11 @@ IfNotExist, settings.ini
 		IniRead, iOpt, settings.ini, Options, Option, 1
 		
 		if (iOpt = 1)
-		;*SC029::
-		;Send {LWIN down}{space};
-		;KeyWait, SC029 ;
-		;Send {LWIN up};
-		
+			*SC029::
+		Send {LWIN down}{space};
+		KeyWait, SC029 ;
+		Send {LWIN up};
+		}
 		;	Gui, Add, Radio, x20 y60 w245 h20 vRadioButton Checked, CapsLock		
 		;else Gui, Add, Radio, x20 y60 w245 h20 vRadioButton, CapsLock		
 		;	if (iOpt = 2)		

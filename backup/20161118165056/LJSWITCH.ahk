@@ -42,7 +42,15 @@ return
 ;Send {ALT up}
 ;return 
 
-
+WinSpace:
+SC029::
+Send {LWIN down}{space};
+KeyWait, SC029 ;
+Send {LWIN up};
+;return 
+;Send {ALT down}{shift}
+;Send {ALT up}
+return
 
 
 
@@ -56,13 +64,7 @@ IfNotExist, settings.ini
 	Else
 	{
 		IniRead, iOpt, settings.ini, Options, Option, 1
-		
-		if (iOpt = 1)
-		;*SC029::
-		;Send {LWIN down}{space};
-		;KeyWait, SC029 ;
-		;Send {LWIN up};
-		
+		;if (iOpt = 1)		
 		;	Gui, Add, Radio, x20 y60 w245 h20 vRadioButton Checked, CapsLock		
 		;else Gui, Add, Radio, x20 y60 w245 h20 vRadioButton, CapsLock		
 		;	if (iOpt = 2)		
