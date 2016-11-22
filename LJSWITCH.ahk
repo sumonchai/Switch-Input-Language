@@ -33,7 +33,7 @@ Menu, Tray,Icon, Util\key.ico
 return
 
 
-;SC029::
+;$SC029::
 ;Send {LWIN down}{space};
 ;KeyWait, SC029 ;
 ;Send {LWIN up};
@@ -50,30 +50,29 @@ IniRead:
 IfNotExist, settings.ini	
 	
 {
-	MsgBox,0, %AppName%  v%Version%, ค่าเริมต้น `nสำหรัค่าเริ่มต้นขอการเปี่ภาษา`n`n Alt + Shift`n
+	MsgBox,0, %AppName%  v%Version%, ค่าเริมต้น `nสำหรัค่าเริ่มต้นของการเปลี่ยนภาษา`n`n Alt + Shift`n
 	IniWrite, 2 , settings.ini, Options, Option
 }
 	Else
 	{
-		IniRead, iOpt, settings.ini, Options, Option, 1
-		
-		if (iOpt = 1)
-		;*SC029::
-		;Send {LWIN down}{space};
-		;KeyWait, SC029 ;
-		;Send {LWIN up};
-		
-		;	Gui, Add, Radio, x20 y60 w245 h20 vRadioButton Checked, CapsLock		
-		;else Gui, Add, Radio, x20 y60 w245 h20 vRadioButton, CapsLock		
-		;	if (iOpt = 2)		
-		;		Gui, Add, Radio,x20  y110 w110 h20 Checked, Alt + Shift	
-		;else Gui, Add, Radio, x20  y110 w110 h20, Alt + Shift		
-		;	if (iOpt = 3)		
-		;		Gui, Add, Radio, x130 y110 w110 h20 Checked, Win + Space	
-		;else Gui, Add, Radio, x130 y110 w110 h20, Win + Space	
-		;MsgBox  Config = %iOpt%`n
+		IniRead, iOpt, settings.ini, Options, Option,
+		 if (iOpt = "2" or "3")
+            $SC029::
+              if (iOpt = "2")            ; Check Window
+                 {   
+                  Send {ALT down}{shift}
+                  Send {ALT up}
+                  return
+                    }
+                if (iOpt = "3")            ; Check Window
+               {      
+                Send {LWIN down}{space};
+                KeyWait, SC029 ;
+                Send {LWIN up}; 
+                return
+                 }
+		return
 	}
-return
 
 
 ShowConfigs(){
@@ -113,6 +112,7 @@ ShowConfigs(){
 	else Gui, Add, Radio, x130 y110 w110 h20, Win + Space	
 		
 	Gui, Show, w278 h175, Options
+	
 	Return
 	
 	
@@ -127,6 +127,7 @@ ShowAbout(){
 	Local AboutText := 
     (LTrim
     " จัดทำเพื่อแก้ไขปัญหาการเปลี่ยนภาษาใน Windows ด้วย ~ [ตัวหนอน]
+        ไม่รองรับการเปลี่ยนภาษาในเกมส์
     switch Language Input
 	     โดยการแก้ไขด้วย Autohotkey 
 
@@ -167,6 +168,24 @@ ShowAbout(){
 	Gui Show, w435 h245, About
 	ControlFocus Button1, About
 }
+;KeyCapsLock:
+;~Capslock::   ; CAPsLock
+;KeyWait, SC03A, T0.3 
+;MsgBox,0, %iOpt%	
+;if ErrorLevel  
+;{   
+;;SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
+;KeyWait, SC03A 
+;}
+;else 
+;{
+;Send {ALT down}{shift}
+; Send {ALT up}
+;}
+;return
+Hotkey1:
+Msgbox %A_ThisHotkey% Has been pressed. `n`nThe apocalypse is here!!
+return
 
 NormalPriority:
 Process, Priority, , Normal
@@ -202,6 +221,7 @@ GuiClose:
 GuiEscape:
 Gui, Submit
 IniWrite, % RadioButton, %A_ScriptDir%\settings.ini, Options, Option
+gosub Reload
 Gui, Destroy 
 Return
 

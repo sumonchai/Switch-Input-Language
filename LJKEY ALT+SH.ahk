@@ -1,4 +1,4 @@
-;Sleep, 2000
+Sleep, 3000
 
 ; ALT DOWN
 dllcall("keybd_event", int, 0x12, int, 0x038, int, 0, int, 0)
