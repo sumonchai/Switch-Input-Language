@@ -4,7 +4,7 @@
 ### Support Key:
 ![Set Key](ALT+Shift.png)
 
-# LJ Input Language *windows 10*
+# LJ Input Language *windows 7-10*
 ### Support Key: WIN + Space, ALT+Shift, CapsLock
 
 ### Download

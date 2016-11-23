@@ -1,3 +1,0 @@
-- เปลี่ยน เป็น Autoit
-- รองรับ windows 10 [Key WIN + Space]
-- เปลี่ยน Lang ได้รวดเร็ว ไม่มี Animation
