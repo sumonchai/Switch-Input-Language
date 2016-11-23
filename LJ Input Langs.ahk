@@ -194,7 +194,7 @@ Loop, parse, ljfiles, `n
 	 URLDownloadToFile, https://raw.githubusercontent.com/sumonchai/Switch-Input-Language/LJ-Input-Langs/%A_LoopField%, %A_LoopField%
 	}
 MsgBox, 64, Restart, The updates have been downloaded.`nThe previous version has been saved as .BACKUP`nClick OK to restart.
-;IniWrite, %GHsha%, settings.ini, Options, sha
+IniWrite, %GHsha%, settings.ini, Options, sha
 Sleep 500
 Reload
 Return
