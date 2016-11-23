@@ -8,7 +8,7 @@
 ### Support Key: WIN + Space, ALT+Shift, CapsLock
 
 ### Download
-[Switch Input Language WIN 10](https://github.com/sumonchai/Switch-Input-Language/releases)
+[Switch Input Language](https://github.com/sumonchai/Switch-Input-Language/releases)
 
 
 ### ข้อดีอีกอย่าง เราจะได้ ~ กลับมาใช้งาน
