@@ -102,8 +102,8 @@ ShowConfigs(){
 	Gui, Add, GroupBox, x10 y40 w260 h50 ,
 	Gui, Add, Groupbox, x10 y90 w260 h50 , Grave Accent ( `` )	
 	if (iOpt = 1)		
-		Gui, Add, Radio, x20 y60 w245 h20 vRadioButton Checked, CapsLock		
-	else Gui, Add, Radio, x20 y60 w245 h20 vRadioButton, CapsLock		
+		Gui, Add, Radio, x20 y60 w245 h20 vRadioButton Checked, CapsLock    [กดค้าง เพื่อใช้งาน CapsLock]
+	else Gui, Add, Radio, x20 y60 w245 h20 vRadioButton, CapsLock   [กดค้าง เพื่อใช้งาน CapsLock]
 		if (iOpt = 2)		
 			Gui, Add, Radio,x20  y110 w110 h20 Checked, Alt + Shift	
 	else Gui, Add, Radio, x20  y110 w110 h20, Alt + Shift		
@@ -123,16 +123,14 @@ ShowAbout(){
 	Static Counter
 	Static Colors := ["BAE5F2", "BEE6F2", "C3E8F3", "C7EAF4", "CCEBF5", "D1EDF6", "D5EFF7", "DAF1F8", "DEF2F8", "E3F4F9", "E4F4F9", "E6F5F9", "E8F6FA", "EAF6FA", "ECF7FB", "EEF8FB", "F0F9FB", "F1F9FC", "F3FAFC", "F5FBFD", "F7FCFD", "F9FCFD", "FBFDFE", "FBFDFE", "FBFDFE", "FBFDFE", "FBFDFE", "FBFDFE", "FBFDFE", "FBFDFE", "FDFEFE", "FDFEFE", "FDFEFE", "FFFFFF"]
 	
-	Static URL := "https://github.com/sumonchai/Switch-Input-Language/"
+	Static URL := "https://github.com/sumonchai/Switch-Input-Language/releases"
 	Local AboutText := 
     (LTrim
     " จัดทำเพื่อแก้ไขปัญหาการเปลี่ยนภาษาใน Windows ด้วย ~ [ตัวหนอน]
         ไม่รองรับการเปลี่ยนภาษาในเกมส์
-    switch Language Input
-	     โดยการแก้ไขด้วย Autohotkey 
-
-			รองรับกดปุ่ม ~  [ตัวหนอน]
-			รองรับกดปุ่ม CapsLock    
+    
+			รองรับกดปุ่ม  ~  [ตัวหนอน]
+			รองรับกดปุ่ม  CapsLock    
 
 			Version " . Version . "
 
@@ -148,7 +146,7 @@ ShowAbout(){
 		Gui Add, TreeView, % "x-1 y" . (A_Index - 1) . " w437 h1 Background" . Colors[A_Index]
 	}
 	
-	Gui Add, Picture, x11 y12 w32 h32 BackgroundTrans, Util\key.ico
+	Gui Add, Picture, x11 y12 w32 h32 BackgroundTrans, Util\lj.ico
 	Gui Font, s13 c0x003399, Tahoma
 	Gui Add, Text, x51 y12 w354 h32 +0x200 BackgroundTrans, %AppName%
 	Gui Font
@@ -170,7 +168,11 @@ ShowAbout(){
 }
 
 CheckUpdate:
-
+if not A_IsAdmin
+{
+    Run *RunAs "%A_ScriptFullPath%"
+    ExitApp
+}
 ljfiles=
 (join`n
 CapslockLang.exe
@@ -194,7 +196,7 @@ Loop, parse, ljfiles, `n
 	 URLDownloadToFile, https://raw.githubusercontent.com/sumonchai/Switch-Input-Language/LJ-Input-Langs/%A_LoopField%, %A_LoopField%
 	}
 MsgBox, 64, Restart, The updates have been downloaded.`nThe previous version has been saved as .BACKUP`nClick OK to restart.
-;IniWrite, %GHsha%, settings.ini, Options, sha
+IniWrite, %GHsha%, settings.ini, Options, sha
 Sleep 500
 Reload
 Return
