@@ -4,11 +4,11 @@
 ### Support Key:
 ![Set Key](ALT+Shift.png)
 
-# Switch Input Language *windows 10*
+# LJ Input Language *windows 10*
 ### Support Key: WIN + Space, ALT+Shift, CapsLock
 
 ### Download
-[Switch Input Language](https://github.com/sumonchai/Switch-Input-Language/releases)
+[LJ Input Language](https://github.com/sumonchai/Switch-Input-Language/releases)
 
 
 ### ข้อดีอีกอย่าง เราจะได้ ~ กลับมาใช้งาน
