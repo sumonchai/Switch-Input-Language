@@ -1,4 +1,4 @@
-﻿SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
+﻿#NoTrayIcon
 CapsLock::
     KeyWait, CapsLock, T0.3 
     if ErrorLevel  {   

@@ -2,11 +2,11 @@
 #Warn
 #InstallKeybdHook
 #SingleInstance force
-SendMode Input
+;SendMode Input
 
 SetWorkingDir %A_ScriptDir%
 
-#Include Util\AutoXYWH.ahk
+;#Include Util\AutoXYWH.ahk
 
 Global AppName := "LJ Input Lang "
     , Version := "2.0"
@@ -28,8 +28,9 @@ Menu, Tray, Add, ตั้งค่า, ShowConfigs
 Menu, Tray, Add 
 Menu, Tray, Add, Reload, Reload
 Menu, Tray, Add, About, ShowAbout
+Menu, Tray, Add, Check for updates, CheckUpdate
 Menu, Tray, Add, Exit, Exit 
-Menu, Tray,Icon, Util\key.ico
+Menu, Tray,Icon, Util\lj.ico
 return
 
 
@@ -43,35 +44,37 @@ return
 ;return 
 
 
-
-
-
 IniRead:
 IfNotExist, settings.ini	
-	
 {
 	MsgBox,0, %AppName%  v%Version%, ค่าเริมต้น `nสำหรัค่าเริ่มต้นของการเปลี่ยนภาษา`n`n Alt + Shift`n
 	IniWrite, 2 , settings.ini, Options, Option
 }
 	Else
 	{
-		IniRead, iOpt, settings.ini, Options, Option,
-		 if (iOpt = "2" or "3")
+		IniRead, iOpt, settings.ini, Options, Option	
+		Process, Exist, CapslockLang.exe
+        If ErrorLevel <> 0
+         Process, Close, CapslockLang.exe	
+		if (iOpt == 1)
+            Run, CapslockLang.exe                      
+        if (iOpt == 2 or 3)       
             $SC029::
-              if (iOpt = "2")            ; Check Window
+              if (iOpt == 2)            ; Check Window
                  {   
                   Send {ALT down}{shift}
                   Send {ALT up}
                   return
                     }
-                if (iOpt = "3")            ; Check Window
+                if (iOpt == 3)            ; Check Window
                {      
-                Send {LWIN down}{space};
-                KeyWait, SC029 ;
-                Send {LWIN up}; 
+                Send {LWIN down}{space}
+                KeyWait, SC029
+                Send {LWIN up}
                 return
-                 }
-		return
+                 }      
+		
+	return
 	}
 
 
@@ -168,24 +171,6 @@ ShowAbout(){
 	Gui Show, w435 h245, About
 	ControlFocus Button1, About
 }
-;KeyCapsLock:
-;~Capslock::   ; CAPsLock
-;KeyWait, SC03A, T0.3 
-;MsgBox,0, %iOpt%	
-;if ErrorLevel  
-;{   
-;;SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"
-;KeyWait, SC03A 
-;}
-;else 
-;{
-;Send {ALT down}{shift}
-; Send {ALT up}
-;}
-;return
-Hotkey1:
-Msgbox %A_ThisHotkey% Has been pressed. `n`nThe apocalypse is here!!
-return
 
 NormalPriority:
 Process, Priority, , Normal
@@ -225,7 +210,51 @@ gosub Reload
 Gui, Destroy 
 Return
 
+pAHKlightfiles=
+(join`n
+pahklight.ahk
+pahklightDB.ini
+categories.txt
+)
+
+CheckUpdate:
+; Each commit (update) of the GitHub (or any git) repository has its
+; own sha key, we can use this to check if there are any updates
+RegExMatch(UrlDownloadToVar("https://api.github.com/repos/hi5/pAHKlight/git/refs/heads/master"),"U)\x22sha\x22\x3A\x22\K\w{6}",GHsha)
+IniRead, sha, settings.ini, Options, sha
+if (GHsha = "") or (GHsha = sha)
+	{
+	 MsgBox, 64, No update available, Your %AppName% seems to be up-to-date.
+	 Return
+	}
+MsgBox, 36, Update?, Do you wish to download updates for %AppName%?
+IfMsgBox, No
+	Return
+;Loop, parse, pAHKlightfiles, `n
+;	{
+;	 FileMove, %A_LoopField%, %A_LoopField%.backup, 1
+;	 URLDownloadToFile, https://raw.github.com/hi5/pAHKlight/master/%A_LoopField%, %A_LoopField%
+;	}
+MsgBox, 64, Restart, The updates have been downloaded.`nThe previous version has been saved as .BACKUP`nClick OK to restart.
+IniWrite, %GHsha%, settings.ini, Options, sha
+Sleep 500
+Reload
+Return
+
+UrlDownloadToVar(URL)
+	{
+	 WebRequest:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
+	 try WebRequest.Open("GET",URL)
+	 catch error
+		Return error.Message
+	 WebRequest.Send()
+	 Return WebRequest.ResponseText
+	}
+
 Exit:
+Process, Exist, CapslockLang.exe
+If ErrorLevel <> 0
+	Process, Close, CapslockLang.exe
 ExitApp
 Return
 

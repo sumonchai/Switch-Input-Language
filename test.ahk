@@ -1,10 +1,5 @@
-﻿; For Touch/Type Cover
-; ---------------------------------------------------------
-; On-screen Caps Lock Indicator
-
-return
- 
-RemoveToolTip:                  
-SetTimer, RemoveToolTip, Off
-ToolTip
-return
+﻿Process, Exist, CAPSLOCK SWITCH.exe
+If ErrorLevel <> 0
+	Process, Close, CAPSLOCK SWITCH.exe
+Else
+	Run, CAPSLOCK SWITCH.exe
