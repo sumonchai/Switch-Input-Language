@@ -191,7 +191,7 @@ IfMsgBox, No
 Loop, parse, ljfiles, `n
 	{
 	 FileMove, %A_LoopField%, %A_LoopField%.backup, 1
-	 ;URLDownloadToFile, https://raw.github.com/hi5/pAHKlight/master/%A_LoopField%, %A_LoopField%
+	 URLDownloadToFile, https://raw.githubusercontent.com/sumonchai/Switch-Input-Language/LJ-Input-Langs/%A_LoopField%, %A_LoopField%
 	}
 MsgBox, 64, Restart, The updates have been downloaded.`nThe previous version has been saved as .BACKUP`nClick OK to restart.
 ;IniWrite, %GHsha%, settings.ini, Options, sha
