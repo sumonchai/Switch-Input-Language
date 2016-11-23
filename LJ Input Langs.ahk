@@ -3,17 +3,14 @@
 #InstallKeybdHook
 #SingleInstance force
 ;SendMode Input
-
+SetBatchLines, -1
 SetWorkingDir %A_ScriptDir%
 
 ;#Include Util\AutoXYWH.ahk
 
 Global AppName := "LJ Input Lang "
     , Version := "2.0"
-    , MsgBoxType
-    , Title
-    , Text
-    , Content
+
 
 Gosub IniRead
 Menu, Tray, Tip, %AppName%  v%Version%
@@ -91,7 +88,7 @@ ShowConfigs(){
 		Gui Add, TreeView, % "x-1 y" . (A_Index - 1) . " w278 h1 Background" . Colors[A_Index]
 	}
 	
-	Gui Add, Picture, x11 y12 w32 h32 BackgroundTrans, Util\key.ico
+	Gui Add, Picture, x11 y12 w32 h32 BackgroundTrans, Util\lj.ico
 	Gui Font, s13 c0x003399, Segoe UI
 	Gui Add, Text, x51 y12 w354 h32 +0x200 BackgroundTrans, Key Set Options
 	Gui Font	
@@ -172,6 +169,45 @@ ShowAbout(){
 	ControlFocus Button1, About
 }
 
+CheckUpdate:
+
+ljfiles=
+(join`n
+CapslockLang.exe
+LJ Input Langs.exe
+)
+; Each commit (update) of the GitHub (or any git) repository has its
+; own sha key, we can use this to check if there are any updates
+RegExMatch(UrlDownloadToVar("https://api.github.com/repos/sumonchai/Switch-Input-Language/git/refs/heads/LJ-Input-Langs"),"U)\x22sha\x22\x3A\x22\K\w{6}",GHsha)
+IniRead, sha, settings.ini, Options, sha
+if (GHsha = "") or (GHsha = sha)
+	{
+	 MsgBox, 64, No update available, Your %AppName% seems to be up-to-date.
+	 Return
+	}
+MsgBox, 36, Update?, Do you wish to download updates for %AppName%?
+IfMsgBox, No
+	Return
+Loop, parse, ljfiles, `n
+	{
+	 FileMove, %A_LoopField%, %A_LoopField%.backup, 1
+	 ;URLDownloadToFile, https://raw.github.com/hi5/pAHKlight/master/%A_LoopField%, %A_LoopField%
+	}
+MsgBox, 64, Restart, The updates have been downloaded.`nThe previous version has been saved as .BACKUP`nClick OK to restart.
+;IniWrite, %GHsha%, settings.ini, Options, sha
+Sleep 500
+Reload
+Return
+
+UrlDownloadToVar(URL)
+	{
+	 WebRequest:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
+	 try WebRequest.Open("GET",URL)
+	 catch error
+		Return error.Message
+	 WebRequest.Send()
+	 Return WebRequest.ResponseText
+	}
 NormalPriority:
 Process, Priority, , Normal
 Menu, Tray, Enable, Normal Priority
@@ -209,47 +245,6 @@ IniWrite, % RadioButton, %A_ScriptDir%\settings.ini, Options, Option
 gosub Reload
 Gui, Destroy 
 Return
-
-pAHKlightfiles=
-(join`n
-pahklight.ahk
-pahklightDB.ini
-categories.txt
-)
-
-CheckUpdate:
-; Each commit (update) of the GitHub (or any git) repository has its
-; own sha key, we can use this to check if there are any updates
-RegExMatch(UrlDownloadToVar("https://api.github.com/repos/hi5/pAHKlight/git/refs/heads/master"),"U)\x22sha\x22\x3A\x22\K\w{6}",GHsha)
-IniRead, sha, settings.ini, Options, sha
-if (GHsha = "") or (GHsha = sha)
-	{
-	 MsgBox, 64, No update available, Your %AppName% seems to be up-to-date.
-	 Return
-	}
-MsgBox, 36, Update?, Do you wish to download updates for %AppName%?
-IfMsgBox, No
-	Return
-;Loop, parse, pAHKlightfiles, `n
-;	{
-;	 FileMove, %A_LoopField%, %A_LoopField%.backup, 1
-;	 URLDownloadToFile, https://raw.github.com/hi5/pAHKlight/master/%A_LoopField%, %A_LoopField%
-;	}
-MsgBox, 64, Restart, The updates have been downloaded.`nThe previous version has been saved as .BACKUP`nClick OK to restart.
-IniWrite, %GHsha%, settings.ini, Options, sha
-Sleep 500
-Reload
-Return
-
-UrlDownloadToVar(URL)
-	{
-	 WebRequest:=ComObjCreate("WinHttp.WinHttpRequest.5.1")
-	 try WebRequest.Open("GET",URL)
-	 catch error
-		Return error.Message
-	 WebRequest.Send()
-	 Return WebRequest.ResponseText
-	}
 
 Exit:
 Process, Exist, CapslockLang.exe
