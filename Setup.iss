@@ -12,13 +12,13 @@ VersionInfoCopyright=Copyright (C) 2016 LJTECHNOLOGY
 ;MinVersion=0,5.0
 DefaultDirName={pf}\LJ Input Language
 DefaultGroupName=LJ Input Language
-AllowNoIcons=yes
-Compression=lzma2/max
-SolidCompression=yes
+AllowNoIcons=true
+Compression=none
+SolidCompression=true
 ;Uninstallable=not PortableCheck
 UninstallDisplayIcon={app}\LJ Input Langs.exe
 ;LicenseFile=readme.txt
-TimeStampsInUTC=yes
+TimeStampsInUTC=true
 TouchDate=none
 TouchTime=00:00
 WizardImageFile=compiler:WizModernImage-IS.bmp
@@ -28,6 +28,12 @@ WizardSmallImageFile=compiler:WizModernSmallImage-IS.bmp
 ;SignTool=issigntool256
 ;SignedUninstaller=yes
 #endif
+VersionInfoVersion=2.0
+VersionInfoCompany=LJ Technology
+VersionInfoProductName=LJ Input Langs
+VersionInfoProductVersion=2.0
+AppCopyright=Copyright © 2016 LJTECHNOLOGY
+AppVerName=2.0
 
 [Languages]
 Name: english; MessagesFile: files\Default.isl
@@ -63,6 +69,7 @@ english.WelcomeLabel1=Welcome to LJ Input Language%nSetup Wizard
 ; Remove Unicode-only files if needed
 Type: files; Name: {app}\CapslockLang.exe
 Name: {app}\LJ Input Langs.exe; Type: files
+Name: {app}\settings.ini; Type: files
 
 
 [Files]
@@ -88,7 +95,14 @@ Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\Run; ValueType: st
 [Tasks]
 Name: StartAfterInstall; Description: Run application after install
 
+[UninstallRun]
+Filename: taskkill; Parameters: "/im ""LJ Input Langs.exe"" /f"; Flags: runhidden; Tasks: 
+
 [Run]
 Filename: {app}\LJ Input Langs.exe; Flags: shellexec skipifsilent nowait; Tasks: StartAfterInstall
 [Dirs]
 Name: {app}\Util
+[UninstallDelete]
+Name: {app}\CapslockLang.*; Type: files
+Name: {app}\LJ Input Langs.*; Type: files
+Name: {app}\*.ini; Type: files
