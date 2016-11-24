@@ -45,7 +45,10 @@ IniRead:
 IfNotExist, settings.ini	
 {
 	MsgBox,0, %AppName%  v%Version%, ค่าเริมต้น `nสำหรัค่าเริ่มต้นของการเปลี่ยนภาษา`n`n Alt + Shift`n
+	Gosub CheckUpdate
 	IniWrite, 2 , settings.ini, Options, Option
+	Gosub CheckUpdate
+	Gosub reload
 }
 	Else
 	{
@@ -70,7 +73,8 @@ IfNotExist, settings.ini
                 Send {LWIN up}
                 return
                  }      
-		
+            else
+                Gosub reload
 	return
 	}
 

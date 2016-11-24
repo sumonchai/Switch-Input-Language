@@ -2,7 +2,7 @@
 AppName=LJ Input Language
 AppId=LJ Input Language
 AppVersion=2.0
-AppPublisher=jrsoftware.org
+AppPublisher=
 AppPublisherURL=https://github.com/sumonchai/Switch-Input-Language
 AppSupportURL=https://github.com/sumonchai/Switch-Input-Language
 AppUpdatesURL=https://github.com/sumonchai/Switch-Input-Language
@@ -34,6 +34,7 @@ VersionInfoProductName=LJ Input Langs
 VersionInfoProductVersion=2.0
 AppCopyright=Copyright © 2016 LJTECHNOLOGY
 AppVerName=2.0
+UninstallDisplayName=LJ Input Langs
 
 [Languages]
 Name: english; MessagesFile: files\Default.isl
