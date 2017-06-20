@@ -9,7 +9,7 @@ SetWorkingDir %A_ScriptDir%
 ;#Include Util\AutoXYWH.ahk
 
 Global AppName := "LJ Input Lang "
-    , Version := "2.0"
+    , Version := "2.1"
 
 
 Gosub IniRead
@@ -50,27 +50,23 @@ IfNotExist, settings.ini
 	Else
 	{
 		IniRead, iOpt, settings.ini, Options, Option	
-		Process, Exist, CapslockLang.exe
+		Process, Exist, Capslockalt.exe
+		Process, Exist, Capslockwin.exe
+		Process, Exist, graveaccentalt.exe
+		Process, Exist, graveaccentwin.exe
         If ErrorLevel <> 0
-         Process, Close, CapslockLang.exe	
+         Process, Close, Capslockalt.exe
+         Process, Close, Capslockwin.exe
+         Process, Close, graveaccentalt.exe
+         Process, Close, graveaccentwin.exe
 		if (iOpt == 1)
-            Run, CapslockLang.exe                      
-        if (iOpt == 2 or 3)       
-            $SC029::
-              if (iOpt == 2)            ; Check Window
-                 {   
-                  Send {ALT down}{shift}
-                  Send {ALT up}
-                  return
-                    }
-                if (iOpt == 3)            ; Check Window
-               {      
-                Send {LWIN down}{space}
-                KeyWait, SC029
-                Send {LWIN up}
-                return
-                 }      
-		
+            Run, Capslockalt.exe                      
+        if (iOpt == 2)    
+			Run, Capslockwin.exe
+		if (iOpt == 3)  	
+			Run, graveaccentalt.exe
+		if (iOpt == 4)  
+			Run, graveaccentwin.exe
 	return
 	}
 
@@ -88,9 +84,9 @@ ShowConfigs(){
 		Gui Add, TreeView, % "x-1 y" . (A_Index - 1) . " w278 h1 Background" . Colors[A_Index]
 	}
 	
-	Gui Add, Picture, x11 y12 w32 h32 BackgroundTrans, Util\lj.ico
+	Gui Add, Picture, x11 y3 w32 h32 BackgroundTrans, Util\lj.ico
 	Gui Font, s13 c0x003399, Segoe UI
-	Gui Add, Text, x51 y12 w354 h32 +0x200 BackgroundTrans, Key Set Options
+	Gui Add, Text, x60 y3 w354 h36 +0x200 BackgroundTrans, Key Set Options
 	Gui Font	
 	Counter := Colors.MaxIndex()
 	Loop % Counter {
@@ -99,17 +95,20 @@ ShowConfigs(){
 	}
 	
 	Gui Font, s9, Segoe UI
-	Gui, Add, GroupBox, x10 y40 w260 h50 ,
+	Gui, Add, GroupBox, x10 y40 w260 h50 , CapLoack [กดค้าง ใช้งาน CapsLock]
 	Gui, Add, Groupbox, x10 y90 w260 h50 , Grave Accent ( `` )	
 	if (iOpt = 1)		
-		Gui, Add, Radio, x20 y60 w245 h20 vRadioButton Checked, CapsLock    [กดค้าง เพื่อใช้งาน CapsLock]
-	else Gui, Add, Radio, x20 y60 w245 h20 vRadioButton, CapsLock   [กดค้าง เพื่อใช้งาน CapsLock]
-		if (iOpt = 2)		
-			Gui, Add, Radio,x20  y110 w110 h20 Checked, Alt + Shift	
-	else Gui, Add, Radio, x20  y110 w110 h20, Alt + Shift		
-		if (iOpt = 3)		
-			Gui, Add, Radio, x130 y110 w110 h20 Checked, Win + Space	
-	else Gui, Add, Radio, x130 y110 w110 h20, Win + Space	
+			  Gui, Add, Radio, x20  y60 w110 h20 Checked, CapLock [ALT]
+		else Gui, Add, Radio, x20  y60 w110 h20, CapLock [ALT]		
+	if (iOpt = 2)		
+			Gui, Add, Radio, x130 y60 w110 h20 Checked, CapLock [Win]
+	  else Gui, Add, Radio, x130 y60 w110 h20, CapLock [Win]
+	if (iOpt = 3)		
+			Gui, Add, Radio, x20  y110 w110 h20 Checked, Alt + Shift
+	  else Gui, Add, Radio, x20  y110 w110 h20, Alt + Shift
+	if (iOpt = 4)		
+			Gui, Add, Radio, x130 y110 w110 h20 Checked, Win + Space
+	  else Gui, Add, Radio, x130 y110 w110 h20, Win + Space	
 		
 	Gui, Show, w278 h175, Options
 	
@@ -175,7 +174,10 @@ if not A_IsAdmin
 }
 ljfiles=
 (join`n
-CapslockLang.exe
+Capslockalt.exe
+Capslockwin.exe
+graveaccentalt.exe
+graveaccentwin.exe
 LJ Input Langs.exe
 )
 ; Each commit (update) of the GitHub (or any git) repository has its
@@ -249,9 +251,15 @@ Gui, Destroy
 Return
 
 Exit:
-Process, Exist, CapslockLang.exe
+		Process, Exist, Capslockalt.exe
+		Process, Exist, Capslockwin.exe
+		Process, Exist, graveaccentalt.exe
+		Process, Exist, graveaccentwin.exe
 If ErrorLevel <> 0
-	Process, Close, CapslockLang.exe
+	     Process, Close, Capslockalt.exe
+         Process, Close, Capslockwin.exe
+         Process, Close, graveaccentalt.exe
+         Process, Close, graveaccentwin.exe
 ExitApp
 Return
 
