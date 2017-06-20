@@ -1,7 +1,7 @@
 [Setup]
 AppName=LJ Input Language
 AppId=LJ Input Language
-AppVersion=2.0
+AppVersion=2.1
 AppPublisher=jrsoftware.org
 AppPublisherURL=https://github.com/sumonchai/Switch-Input-Language
 AppSupportURL=https://github.com/sumonchai/Switch-Input-Language
@@ -16,7 +16,7 @@ AllowNoIcons=true
 Compression=none
 SolidCompression=true
 ;Uninstallable=not PortableCheck
-UninstallDisplayIcon={app}\LJ Input Langs.exe
+UninstallDisplayIcon={app}\lj.ico
 ;LicenseFile=readme.txt
 TimeStampsInUTC=true
 TouchDate=none
@@ -28,12 +28,13 @@ WizardSmallImageFile=compiler:WizModernSmallImage-IS.bmp
 ;SignTool=issigntool256
 ;SignedUninstaller=yes
 #endif
-VersionInfoVersion=2.0
+VersionInfoVersion=2.1
 VersionInfoCompany=LJ Technology
 VersionInfoProductName=LJ Input Langs
-VersionInfoProductVersion=2.0
+VersionInfoProductVersion=2.1
 AppCopyright=Copyright © 2016 LJTECHNOLOGY
-AppVerName=2.0
+;AppVersion=2.1
+;AppVerName=2.0
 
 [Languages]
 Name: english; MessagesFile: files\Default.isl
@@ -67,15 +68,17 @@ english.WelcomeLabel1=Welcome to LJ Input Language%nSetup Wizard
 
 [InstallDelete]
 ; Remove Unicode-only files if needed
-Type: files; Name: {app}\CapslockLang.exe
+Type: files; Name: {app}\*.exe
 Name: {app}\LJ Input Langs.exe; Type: files
 Name: {app}\settings.ini; Type: files
 
-
 [Files]
-Source: LJ Input Langs.exe; DestDir: {app}; Flags: ignoreversion signonce touch; Tasks: ; Languages: 
-Source: CapslockLang.exe; DestDir: {app}; Flags: ignoreversion signonce touch; Tasks: ; Languages: 
-Source: Util\lj.ico; DestDir: {app}\Util\
+Source: "LJ Input Langs.exe"; DestDir: "{app}"; Flags: ignoreversion touch
+Source: "Capslockalt.exe"; DestDir: "{app}"; Flags: ignoreversion touch
+Source: "Capslockwin.exe"; DestDir: "{app}"; Flags: ignoreversion touch
+Source: "graveaccentalt.exe"; DestDir: "{app}"; Flags: ignoreversion touch
+Source: "graveaccentwin.exe"; DestDir: "{app}"; Flags: ignoreversion touch
+Source: "Util\lj.ico"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: {group}\LJ Input Language; Filename: {app}\LJ Input Langs.exe
@@ -103,6 +106,6 @@ Filename: {app}\LJ Input Langs.exe; Flags: shellexec skipifsilent nowait; Tasks:
 [Dirs]
 Name: {app}\Util
 [UninstallDelete]
-Name: {app}\CapslockLang.*; Type: files
+Name: {app}\*.*; Type: files
 Name: {app}\LJ Input Langs.*; Type: files
 Name: {app}\*.ini; Type: files
