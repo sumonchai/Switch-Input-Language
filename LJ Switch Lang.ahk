@@ -187,7 +187,7 @@ RegExMatch(UrlDownloadToVar("https://api.github.com/repos/sumonchai/Switch-Input
 IniRead, sha, settings.ini, Options, sha
 if (GHsha = "") or (GHsha = sha)
 	{
-	 MsgBox, 64, No update available, Your %AppName% seems to be up-to-date.
+	 MsgBox, 64, No update available, Your %AppName% Program to be up-to-date.
 	 Return
 	}
 MsgBox, 36, Update?, Do you wish to download updates for %AppName%?
@@ -196,7 +196,7 @@ IfMsgBox, No
 Loop, parse, ljfiles, `n
 	{
 	 FileMove, %A_LoopField%, %A_LoopField%.backup, 1
-	 URLDownloadToFile, https://raw.githubusercontent.com/sumonchai/Switch-Input-Language/tree/LJ-Switch-Lang/%A_LoopField%, %A_LoopField%
+	 URLDownloadToFile, https://raw.githubusercontent.com/sumonchai/Switch-Input-Language/LJ-Switch-Lang/%A_LoopField%, %A_LoopField%
 	}
 MsgBox, 64, Restart, The updates have been downloaded.`nThe previous version has been saved as .BACKUP`nClick OK to restart.
 IniWrite, %GHsha%, settings.ini, Options, sha

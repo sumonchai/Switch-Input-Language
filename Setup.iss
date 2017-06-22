@@ -1,6 +1,8 @@
-﻿[Setup]
-AppName=LJ Switch Language
-AppId=LJ Switch Language
+﻿#define AppVersion "2.1"
+[Setup]
+PrivilegesRequired=admin
+AppName=LJ Switch Lang
+AppId=LJ Switch Lang
 AppVersion=2.1
 AppPublisher=
 AppPublisherURL=https://github.com/sumonchai/Switch-Input-Language
@@ -10,10 +12,10 @@ VersionInfoCopyright=Copyright (C) 2017 LJTECHNOLOGY
 ;AppMutex=InnoSetupCompilerAppMutex,Global\InnoSetupCompilerAppMutex
 ;SetupMutex=InnoSetupCompilerSetupMutex,Global\InnoSetupCompilerSetupMutex
 ;MinVersion=0,5.0
-DefaultDirName={pf}\LJ Switch Language
-DefaultGroupName=LJ Switch Language
+DefaultDirName={pf}\LJ Switch Lang
+DefaultGroupName=LJ Switch Lang
 AllowNoIcons=true
-Compression=none
+Compression=lzma2/ultra64
 SolidCompression=true
 ;Uninstallable=not PortableCheck
 UninstallDisplayIcon={app}\LJ Switch Langs.exe
@@ -35,6 +37,12 @@ VersionInfoProductVersion=2.1
 AppCopyright=Copyright © 2017 LJTECHNOLOGY
 AppVerName=2.1
 UninstallDisplayName=LJ Switch Lang
+ShowTasksTreeLines=True
+InternalCompressLevel=ultra64
+DisableStartupPrompt=False
+SetupIconFile=D:\LJ\Switch-Input-Language\Util\lj.ico
+OutputBaseFilename=LJ Switch Lang V2.1
+ShowUndisplayableLanguages=True
 
 [Languages]
 Name: english; MessagesFile: files\Default.isl
