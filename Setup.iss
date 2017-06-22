@@ -1,22 +1,22 @@
-[Setup]
-AppName=LJ Input Language
-AppId=LJ Input Language
+﻿[Setup]
+AppName=LJ Switch Language
+AppId=LJ Switch Language
 AppVersion=2.1
-AppPublisher=jrsoftware.org
+AppPublisher=
 AppPublisherURL=https://github.com/sumonchai/Switch-Input-Language
 AppSupportURL=https://github.com/sumonchai/Switch-Input-Language
 AppUpdatesURL=https://github.com/sumonchai/Switch-Input-Language
-VersionInfoCopyright=Copyright (C) 2016 LJTECHNOLOGY
+VersionInfoCopyright=Copyright (C) 2017 LJTECHNOLOGY
 ;AppMutex=InnoSetupCompilerAppMutex,Global\InnoSetupCompilerAppMutex
 ;SetupMutex=InnoSetupCompilerSetupMutex,Global\InnoSetupCompilerSetupMutex
 ;MinVersion=0,5.0
-DefaultDirName={pf}\LJ Input Language
-DefaultGroupName=LJ Input Language
+DefaultDirName={pf}\LJ Switch Language
+DefaultGroupName=LJ Switch Language
 AllowNoIcons=true
 Compression=none
 SolidCompression=true
 ;Uninstallable=not PortableCheck
-UninstallDisplayIcon={app}\lj.ico
+UninstallDisplayIcon={app}\LJ Switch Langs.exe
 ;LicenseFile=readme.txt
 TimeStampsInUTC=true
 TouchDate=none
@@ -30,11 +30,11 @@ WizardSmallImageFile=compiler:WizModernSmallImage-IS.bmp
 #endif
 VersionInfoVersion=2.1
 VersionInfoCompany=LJ Technology
-VersionInfoProductName=LJ Input Langs
+VersionInfoProductName=LJ Switch Lang
 VersionInfoProductVersion=2.1
-AppCopyright=Copyright � 2016 LJTECHNOLOGY
-;AppVersion=2.1
-;AppVerName=2.0
+AppCopyright=Copyright © 2017 LJTECHNOLOGY
+AppVerName=2.1
+UninstallDisplayName=LJ Switch Lang
 
 [Languages]
 Name: english; MessagesFile: files\Default.isl
@@ -64,24 +64,28 @@ Name: english; MessagesFile: files\Default.isl
 
 [Messages]
 ; two "Setup" on the same line looks weird, so put a line break in between
-english.WelcomeLabel1=Welcome to LJ Input Language%nSetup Wizard
+english.WelcomeLabel1=Welcome to LJ Switch Language%nSetup Wizard
 
 [InstallDelete]
 ; Remove Unicode-only files if needed
-Type: files; Name: {app}\*.exe
-Name: {app}\LJ Input Langs.exe; Type: files
-Name: {app}\settings.ini; Type: files
+Type: files; Name: "{app}\Capslockalt.exe"
+Type: files; Name: "{app}\LJ Switch Lang.exe"
+Type: files; Name: "{app}\settings.ini"
+Type: files; Name: "{app}\Cap*.*"
+Type: files; Name: "{app}\grave*.*"
 
 [Files]
-Source: "LJ Input Langs.exe"; DestDir: "{app}"; Flags: ignoreversion touch
-Source: "Capslockalt.exe"; DestDir: "{app}"; Flags: ignoreversion touch
-Source: "Capslockwin.exe"; DestDir: "{app}"; Flags: ignoreversion touch
-Source: "graveaccentalt.exe"; DestDir: "{app}"; Flags: ignoreversion touch
-Source: "graveaccentwin.exe"; DestDir: "{app}"; Flags: ignoreversion touch
-Source: "Util\lj.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Capslockalt.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Util\lj.ico"; DestDir: "{app}\Util\"; Flags: ignoreversion
+Source: "LJ Switch Lang.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "settings.ini"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Capslockalt.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Capslockwin.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "graveaccentalt.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "graveaccentwin.exe"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: {group}\LJ Input Language; Filename: {app}\LJ Input Langs.exe
+Name: {group}\LJ Switch Language; Filename: {app}\LJ Switch Lang.exe
 
 
 [Registry]
@@ -93,19 +97,25 @@ Name: {group}\LJ Input Language; Filename: {app}\LJ Input Langs.exe
 ;Root: HKCU; Subkey: "Software\LJ TECHNOLOGY\Switch Input Language"; Flags: uninsdeletekey
 ;Root: HKLM; Subkey: "Software\LJ TECHNOLOGY"; Flags: uninsdeletekeyifempty
 ;Root: HKLM64; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Switch Input Language"; ValueData: """{app}\InputLang.exe"""; Flags: uninsdeletevalue
-Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: LJ Input Language; ValueData: """{app}\LJ Input Langs.exe"""; Flags: uninsdeletevalue
+Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: LJ Switch Language; ValueData: """{app}\LJ Switch Lang.exe"""; Flags: uninsdeletevalue
 
 [Tasks]
 Name: StartAfterInstall; Description: Run application after install
 
 [UninstallRun]
-Filename: taskkill; Parameters: "/im ""LJ Input Langs.exe"" /f"; Flags: runhidden; Tasks: 
+Filename: "taskkill"; Parameters: "/im ""LJ Switch Lang.exe"" /f"; Flags: runhidden
+Filename: "taskkill"; Parameters: "/im ""Capslockwin.exe"" /f"; Flags: runhidden
+Filename: "taskkill"; Parameters: "/im ""Capslockalt.exe"" /f"; Flags: runhidden
+Filename: "taskkill"; Parameters: "/im ""graveaccentalt.exe"" /f"; Flags: runhidden
+Filename: "taskkill"; Parameters: "/im ""graveaccentwin.exe"" /f"; Flags: runhidden
 
 [Run]
-Filename: {app}\LJ Input Langs.exe; Flags: shellexec skipifsilent nowait; Tasks: StartAfterInstall
-[Dirs]
-Name: {app}\Util
+Filename: {app}\LJ Switch Lang.exe; Flags: shellexec skipifsilent nowait; Tasks: StartAfterInstall
+
 [UninstallDelete]
-Name: {app}\*.*; Type: files
-Name: {app}\LJ Input Langs.*; Type: files
-Name: {app}\*.ini; Type: files
+Type: files; Name: "{app}\Caps*.*"
+Type: files; Name: "{app}\LJ Switch Lang.*"
+Type: files; Name: "{app}\grave*.*"
+
+[Dirs]
+Name: "{app}\Files\Languages\Languages"
