@@ -1,0 +1,11 @@
+# Build output
+src/bin/
+src/obj/
+
+# IDE / tools
+.claude/
+.qwen/
+*.user
+
+# Installer output (upload as GitHub Release asset separately)
+dist/
