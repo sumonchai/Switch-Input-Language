@@ -9,6 +9,9 @@
     <LangVersion>latest</LangVersion>
     <PlatformTarget>x64</PlatformTarget>
     <ApplicationIcon>media\LJ LOGO.ico</ApplicationIcon>
+    <Version>3.0.2</Version>
+    <FileVersion>3.0.2.0</FileVersion>
+    <AssemblyVersion>3.0.2.0</AssemblyVersion>
   </PropertyGroup>
 
   <!-- copy icon ไปพร้อม EXE -->

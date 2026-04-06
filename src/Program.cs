@@ -37,6 +37,10 @@ namespace SwitchInputLanguage
                 hook.ResetState();
             });
             menu.Items.Add(new ToolStripSeparator());
+            menu.Items.Add("ตรวจหาการอัปเดต...", null, (s, e) =>
+            {
+                UpdateChecker.CheckForUpdate(null);
+            });
             menu.Items.Add("เกี่ยวกับ", null, (s, e) =>
                 Process.Start(new ProcessStartInfo("https://github.com/sumonchai/Switch-Input-Language") { UseShellExecute = true }));
             menu.Items.Add(new ToolStripSeparator());
