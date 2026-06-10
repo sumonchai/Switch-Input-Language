@@ -1,6 +1,7 @@
 # Build output
 src/bin/
 src/obj/
+out/
 
 # IDE / tools
 .claude/

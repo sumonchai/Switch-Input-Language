@@ -28,6 +28,8 @@ namespace SwitchInputLanguage
                 Visible = true,
             };
 
+            string exePath = Application.ExecutablePath;
+
             var menu = new ContextMenuStrip();
             menu.Items.Add("ตั้งค่า Hold Duration...", null, (s, e) =>
             {
@@ -36,6 +38,32 @@ namespace SwitchInputLanguage
                 hook.Paused = false;
                 hook.ResetState();
             });
+
+            var startupItem = new ToolStripMenuItem("เริ่มต้นพร้อม Windows")
+            {
+                Checked = StartupHelper.IsStartupEnabled()
+            };
+            startupItem.Click += (s, e) =>
+            {
+                startupItem.Checked = !startupItem.Checked;
+                StartupHelper.SetStartup(startupItem.Checked, exePath);
+            };
+            menu.Items.Add(startupItem);
+
+            menu.Items.Add(new ToolStripSeparator());
+
+            var passItem = new ToolStripMenuItem("ส่งต่อให้เครื่องรีโมท (Passthrough)")
+            {
+                Checked = hook.Passthrough
+            };
+            passItem.Click += (s, e) =>
+            {
+                passItem.Checked = !passItem.Checked;
+                hook.Passthrough = passItem.Checked;
+                hook.ResetState();
+            };
+            menu.Items.Add(passItem);
+
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add("ตรวจหาการอัปเดต...", null, (s, e) =>
             {

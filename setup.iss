@@ -1,5 +1,5 @@
 #define AppName    "Switch Input Language"
-#define AppVersion "3.0.2"
+#define AppVersion "3.1.0"
 #define AppExe     "SwitchInputLanguage.exe"
 #define AppPublisher "LAO Work Space"
 
@@ -22,7 +22,8 @@ UninstallDisplayIcon={app}\{#AppExe}
 DisableWelcomePage=no
 DisableDirPage=no
 DisableReadyPage=no
-; ลบเวอร์ชันเก่าก่อนติดตั้ง
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 CloseApplications=yes
 CloseApplicationsFilter=*{#AppExe}
 RestartApplications=no
@@ -34,13 +35,14 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "startup"; Description: "เริ่มทำงานอัตโนมัติเมื่อ Windows เปิด"; GroupDescription: "ตัวเลือกเพิ่มเติม:"; Flags: unchecked
 
 [Files]
-Source: "src\bin\Release\net48-windows\{#AppExe}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "src\bin\Release\net48-windows\{#AppExe}.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "src\bin\Release\net48-windows\media\LJ LOGO.ico"; DestDir: "{app}\media"; Flags: ignoreversion
+Source: "out\{#AppExe}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "out\{#AppExe}.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "out\media\LJ LOGO.ico"; DestDir: "{app}\media"; Flags: ignoreversion
 
 [Icons]
-; Desktop shortcut เท่านั้น — ไม่สร้าง Start Menu
 Name: "{userdesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"
+Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExe}"; IconFilename: "{app}\media\LJ LOGO.ico"
+Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "{#AppName}"; ValueData: """{app}\{#AppExe}"""; Flags: uninsdeletevalue; Tasks: startup
@@ -52,7 +54,6 @@ Filename: "{app}\{#AppExe}"; Description: "เปิดโปรแกรม"; F
 Filename: "taskkill"; Parameters: "/IM {#AppExe} /F"; Flags: runhidden; RunOnceId: "KillApp"
 
 [Code]
-// ลบ version เก่าก่อนติดตั้ง
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   UninstPath: String;

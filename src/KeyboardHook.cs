@@ -11,6 +11,8 @@ namespace SwitchInputLanguage
         private const int  WM_KEYDOWN     = 0x0100;
         private const int  WM_KEYUP       = 0x0101;
         private const uint VK_CAPITAL     = 0x14;
+        private const uint VK_LWIN        = 0x5B;
+        private const uint VK_SPACE       = 0x20;
 
         // ── Language ──────────────────────────────────────────────────────────
         private const uint WM_INPUTLANGCHANGEREQUEST = 0x0050;
@@ -19,6 +21,8 @@ namespace SwitchInputLanguage
         // ── SendInput ─────────────────────────────────────────────────────────
         private const uint     INPUT_KEYBOARD  = 1;
         private const uint     KEYEVENTF_KEYUP = 0x0002;
+        private const uint     KEYEVENTF_SCANCODE = 0x0008;
+        private const uint     KEYEVENTF_EXTENDEDKEY = 0x0001;
         private static readonly UIntPtr OwnMark = (UIntPtr)0xCAFEF00D; // marker injection ของเรา
 
         // ── P/Invoke ──────────────────────────────────────────────────────────
@@ -66,6 +70,10 @@ namespace SwitchInputLanguage
         private bool     _isDown;
         private DateTime _downTime;
         public  bool     Paused { get; set; }
+        public  bool     Passthrough { get; set; }
+
+        private DateTime _lastRemoteCheck;
+        private bool     _lastRemoteResult;
 
         private static int _layoutIdx = -1;
 
@@ -88,15 +96,20 @@ namespace SwitchInputLanguage
             {
                 var kb = Marshal.PtrToStructure<KBDLLHOOKSTRUCT>(lParam);
 
+                // injection ของเราเอง → ปล่อยผ่านทันที
+                if (kb.extra == OwnMark)
+                    return CallNextHookEx(_hook, nCode, wParam, lParam);
+
+                // ── CapsLock ───────────────────────────────────────────────
                 if (kb.vkCode == VK_CAPITAL)
                 {
-                    // injection ของเราเอง → ปล่อยผ่านทันที
-                    if (kb.extra == OwnMark)
+                    if (Passthrough)
                         return CallNextHookEx(_hook, nCode, wParam, lParam);
 
-                    // ขณะ dialog เปิด → block ทั้งหมด
                     if (Paused)
                         return (IntPtr)1;
+
+                    bool remote = IsForegroundRemoteDesktop();
 
                     if (wParam == (IntPtr)WM_KEYDOWN)
                     {
@@ -108,10 +121,15 @@ namespace SwitchInputLanguage
                     {
                         _isDown = false;
                         double held = (DateTime.Now - _downTime).TotalMilliseconds;
-                        if (held < Settings.HoldMs)
+                        bool shortPress = held < Settings.HoldMs;
+
+                        if (remote)
+                            SendToRemote(shortPress);
+                        else if (shortPress)
                             SwitchLanguage();
                         else
                             ToggleCapsLock();
+
                         return (IntPtr)1;
                     }
                 }
@@ -130,12 +148,10 @@ namespace SwitchInputLanguage
             IntPtr[] layouts = new IntPtr[count];
             GetKeyboardLayoutList(count, layouts);
 
-            if (_layoutIdx < 0)
-            {
-                IntPtr current = GetKeyboardLayout(fgThread);
-                _layoutIdx = Array.IndexOf(layouts, current);
-                if (_layoutIdx < 0) _layoutIdx = 0;
-            }
+            // หาตำแหน่งปัจจุบันเสมอ → sync กับ Windows native Win+Space
+            IntPtr current = GetKeyboardLayout(fgThread);
+            _layoutIdx = Array.IndexOf(layouts, current);
+            if (_layoutIdx < 0) _layoutIdx = 0;
 
             _layoutIdx = (_layoutIdx + 1) % count;
             IntPtr next = layouts[_layoutIdx];
@@ -163,10 +179,66 @@ namespace SwitchInputLanguage
             });
         }
 
+        private static void SendToRemote(bool shortPress)
+        {
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                System.Threading.Thread.Sleep(40);
+                if (shortPress)
+                {
+                    // ใช้ scancode → bypass LLKHF_INJECTED filter ของ RustDesk
+                    SendInput(1, new[] { MakeScanKey(0xE05B, 0) }, Marshal.SizeOf(typeof(INPUT)));
+                    System.Threading.Thread.Sleep(30);
+                    SendInput(1, new[] { MakeScanKey(0x0039, 0) }, Marshal.SizeOf(typeof(INPUT)));
+                    System.Threading.Thread.Sleep(30);
+                    SendInput(1, new[] { MakeScanKey(0x0039, KEYEVENTF_KEYUP) }, Marshal.SizeOf(typeof(INPUT)));
+                    System.Threading.Thread.Sleep(30);
+                    SendInput(1, new[] { MakeScanKey(0xE05B, KEYEVENTF_KEYUP) }, Marshal.SizeOf(typeof(INPUT)));
+                }
+                else
+                {
+                    var inputs = new[]
+                    {
+                        MakeKey(VK_CAPITAL, 0),
+                        MakeKey(VK_CAPITAL, KEYEVENTF_KEYUP),
+                    };
+                    SendInput((uint)inputs.Length, inputs, Marshal.SizeOf(typeof(INPUT)));
+                }
+            });
+        }
+
+        private bool IsForegroundRemoteDesktop()
+        {
+            if ((DateTime.Now - _lastRemoteCheck).TotalMilliseconds < 500)
+                return _lastRemoteResult;
+
+            _lastRemoteCheck = DateTime.Now;
+            try
+            {
+                IntPtr hWnd = GetForegroundWindow();
+                if (hWnd == IntPtr.Zero) { _lastRemoteResult = false; return false; }
+                GetWindowThreadProcessId(hWnd, out uint pid);
+                using var p = Process.GetProcessById((int)pid);
+                string name = p.ProcessName.ToLowerInvariant();
+                _lastRemoteResult = name == "mstsc" || name == "msrdc" || name == "teamviewer"
+                    || name == "anydesk" || name == "vncviewer" || name == "winvnc"
+                    || name == "rustdesk" || name == "parsec" || name == "splashtop"
+                    || name == "tvnserver" || name == "nxplayer";
+                return _lastRemoteResult;
+            }
+            catch { _lastRemoteResult = false; return false; }
+        }
+
         private static INPUT MakeKey(uint vk, uint flags) => new INPUT
         {
             type = INPUT_KEYBOARD,
             u    = new INPUTUNION { ki = new KEYBDINPUT { wVk = (ushort)vk, dwFlags = flags, extra = OwnMark } }
+        };
+
+        private static INPUT MakeScanKey(uint scan, uint flags) => new INPUT
+        {
+            type = INPUT_KEYBOARD,
+            u    = new INPUTUNION { ki = new KEYBDINPUT { wScan = (ushort)scan, dwFlags = flags | KEYEVENTF_SCANCODE | (scan > 0xFF ? KEYEVENTF_EXTENDEDKEY : 0), extra = OwnMark } }
         };
     }
 }
