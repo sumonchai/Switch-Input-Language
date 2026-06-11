@@ -151,15 +151,15 @@ namespace SwitchInputLanguage
             GetKeyboardLayoutList(count, layouts);
             if (count == 0) return;
 
-            // หาตำแหน่งปัจจุบัน → ใช้ thread ตัวเอง (แม่นยำกว่า)
-            IntPtr current = GetKeyboardLayout(myThread);
+            // หาตำแหน่งปัจจุบันจาก foreground thread
+            IntPtr current = GetKeyboardLayout(fgThread != 0 ? fgThread : myThread);
             _layoutIdx = Array.IndexOf(layouts, current);
             if (_layoutIdx < 0) _layoutIdx = 0;
 
             _layoutIdx = (_layoutIdx + 1) % count;
             IntPtr next = layouts[_layoutIdx];
 
-            // เปลี่ยนบน foreground thread
+            // foreground window
             if (hWnd != IntPtr.Zero && fgThread != 0 && fgThread != myThread)
             {
                 AttachThreadInput(myThread, fgThread, true);
@@ -168,8 +168,8 @@ namespace SwitchInputLanguage
                 PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, IntPtr.Zero, next);
             }
 
-            // เปลี่ยนบน thread ตัวเอง + system default (ครอบคลุม desktop)
-            ActivateKeyboardLayout(next, KLF_ACTIVATE);
+            // ครอบคลุม desktop / taskbar
+            ActivateKeyboardLayout(next, KLF_ACTIVATE | 0x10000000); // KLF_SETFORPROCESS
             SystemParametersInfo(SPI_SETDEFAULTINPUTLANG, 0, next, 0x0002);
         }
 
