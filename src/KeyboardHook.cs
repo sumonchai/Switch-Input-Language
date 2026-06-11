@@ -151,27 +151,26 @@ namespace SwitchInputLanguage
             GetKeyboardLayoutList(count, layouts);
             if (count == 0) return;
 
-            // หาตำแหน่งปัจจุบันเสมอ → sync กับ Windows native Win+Space
-            IntPtr current = GetKeyboardLayout(fgThread != 0 ? fgThread : myThread);
+            // หาตำแหน่งปัจจุบัน → ใช้ thread ตัวเอง (แม่นยำกว่า)
+            IntPtr current = GetKeyboardLayout(myThread);
             _layoutIdx = Array.IndexOf(layouts, current);
             if (_layoutIdx < 0) _layoutIdx = 0;
 
             _layoutIdx = (_layoutIdx + 1) % count;
             IntPtr next = layouts[_layoutIdx];
 
+            // เปลี่ยนบน foreground thread
             if (hWnd != IntPtr.Zero && fgThread != 0 && fgThread != myThread)
             {
-                bool attached = AttachThreadInput(myThread, fgThread, true);
+                AttachThreadInput(myThread, fgThread, true);
                 ActivateKeyboardLayout(next, KLF_ACTIVATE);
-                if (attached) AttachThreadInput(myThread, fgThread, false);
-                else SystemParametersInfo(SPI_SETDEFAULTINPUTLANG, 0, next, 0x0002);
+                AttachThreadInput(myThread, fgThread, false);
                 PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, IntPtr.Zero, next);
             }
-            else
-            {
-                ActivateKeyboardLayout(next, KLF_ACTIVATE);
-                SystemParametersInfo(SPI_SETDEFAULTINPUTLANG, 0, next, 0x0002);
-            }
+
+            // เปลี่ยนบน thread ตัวเอง + system default (ครอบคลุม desktop)
+            ActivateKeyboardLayout(next, KLF_ACTIVATE);
+            SystemParametersInfo(SPI_SETDEFAULTINPUTLANG, 0, next, 0x0002);
         }
 
         // ── Toggle Caps Lock ──────────────────────────────────────────────────
