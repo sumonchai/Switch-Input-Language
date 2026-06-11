@@ -77,8 +77,6 @@ namespace SwitchInputLanguage
         private DateTime _lastRemoteCheck;
         private bool     _lastRemoteResult;
 
-        public  bool     Paused { get; set; }
-        public  bool     Passthrough { get; set; }
         public KeyboardHook()
         {
             _proc = Callback;

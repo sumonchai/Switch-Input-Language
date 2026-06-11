@@ -1,5 +1,5 @@
 #define AppName    "Switch Input Language"
-#define AppVersion "3.1.0"
+#define AppVersion "3.1.1"
 #define AppExe     "SwitchInputLanguage.exe"
 #define AppPublisher "LXRJ"
 
