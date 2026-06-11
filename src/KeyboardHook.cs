@@ -77,9 +77,8 @@ namespace SwitchInputLanguage
         private DateTime _lastRemoteCheck;
         private bool     _lastRemoteResult;
 
-        private static int _layoutIdx = -1;
-
-        // ── ctor / Dispose ────────────────────────────────────────────────────
+        public  bool     Paused { get; set; }
+        public  bool     Passthrough { get; set; }
         public KeyboardHook()
         {
             _proc = Callback;
@@ -142,35 +141,21 @@ namespace SwitchInputLanguage
         // ── เปลี่ยนภาษา ──────────────────────────────────────────────────────
         private static void SwitchLanguage()
         {
+            const uint HKL_NEXT = 1;
             IntPtr hWnd     = GetForegroundWindow();
             uint   fgThread = GetWindowThreadProcessId(hWnd, out _);
             uint   myThread = GetCurrentThreadId();
 
-            int      count   = GetKeyboardLayoutList(0, null);
-            IntPtr[] layouts = new IntPtr[count];
-            GetKeyboardLayoutList(count, layouts);
-            if (count == 0) return;
-
-            // หาตำแหน่งปัจจุบันจาก foreground thread
-            IntPtr current = GetKeyboardLayout(fgThread != 0 ? fgThread : myThread);
-            _layoutIdx = Array.IndexOf(layouts, current);
-            if (_layoutIdx < 0) _layoutIdx = 0;
-
-            _layoutIdx = (_layoutIdx + 1) % count;
-            IntPtr next = layouts[_layoutIdx];
-
-            // foreground window
             if (hWnd != IntPtr.Zero && fgThread != 0 && fgThread != myThread)
             {
                 AttachThreadInput(myThread, fgThread, true);
-                ActivateKeyboardLayout(next, KLF_ACTIVATE);
+                ActivateKeyboardLayout((IntPtr)HKL_NEXT, KLF_ACTIVATE);
                 AttachThreadInput(myThread, fgThread, false);
-                PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, IntPtr.Zero, next);
+                PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, (IntPtr)HKL_NEXT, IntPtr.Zero);
             }
 
-            // ครอบคลุม desktop / taskbar
-            ActivateKeyboardLayout(next, KLF_ACTIVATE | 0x10000000); // KLF_SETFORPROCESS
-            SystemParametersInfo(SPI_SETDEFAULTINPUTLANG, 0, next, 0x0002);
+            // desktop / taskbar / no window
+            ActivateKeyboardLayout((IntPtr)HKL_NEXT, KLF_ACTIVATE);
         }
 
         // ── Toggle Caps Lock ──────────────────────────────────────────────────
