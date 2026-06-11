@@ -23,6 +23,7 @@ namespace SwitchInputLanguage
         private const uint     KEYEVENTF_KEYUP = 0x0002;
         private const uint     KEYEVENTF_SCANCODE = 0x0008;
         private const uint     KEYEVENTF_EXTENDEDKEY = 0x0001;
+        private const uint     SPI_SETDEFAULTINPUTLANG = 0x005A;
         private static readonly UIntPtr OwnMark = (UIntPtr)0xCAFEF00D; // marker injection ของเรา
 
         // ── P/Invoke ──────────────────────────────────────────────────────────
@@ -40,6 +41,7 @@ namespace SwitchInputLanguage
         [DllImport("user32.dll")] static extern bool   PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         [DllImport("kernel32.dll")] static extern uint  GetCurrentThreadId();
         [DllImport("user32.dll")] static extern uint   SendInput(uint n, INPUT[] inputs, int size);
+        [DllImport("user32.dll")] static extern bool   SystemParametersInfo(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 
         // ── Structs ───────────────────────────────────────────────────────────
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
@@ -147,20 +149,29 @@ namespace SwitchInputLanguage
             int      count   = GetKeyboardLayoutList(0, null);
             IntPtr[] layouts = new IntPtr[count];
             GetKeyboardLayoutList(count, layouts);
+            if (count == 0) return;
 
             // หาตำแหน่งปัจจุบันเสมอ → sync กับ Windows native Win+Space
-            IntPtr current = GetKeyboardLayout(fgThread);
+            IntPtr current = GetKeyboardLayout(fgThread != 0 ? fgThread : myThread);
             _layoutIdx = Array.IndexOf(layouts, current);
             if (_layoutIdx < 0) _layoutIdx = 0;
 
             _layoutIdx = (_layoutIdx + 1) % count;
             IntPtr next = layouts[_layoutIdx];
 
-            AttachThreadInput(myThread, fgThread, true);
-            ActivateKeyboardLayout(next, KLF_ACTIVATE);
-            AttachThreadInput(myThread, fgThread, false);
-
-            PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, IntPtr.Zero, next);
+            if (hWnd != IntPtr.Zero && fgThread != 0 && fgThread != myThread)
+            {
+                bool attached = AttachThreadInput(myThread, fgThread, true);
+                ActivateKeyboardLayout(next, KLF_ACTIVATE);
+                if (attached) AttachThreadInput(myThread, fgThread, false);
+                else SystemParametersInfo(SPI_SETDEFAULTINPUTLANG, 0, next, 0x0002);
+                PostMessage(hWnd, WM_INPUTLANGCHANGEREQUEST, IntPtr.Zero, next);
+            }
+            else
+            {
+                ActivateKeyboardLayout(next, KLF_ACTIVATE);
+                SystemParametersInfo(SPI_SETDEFAULTINPUTLANG, 0, next, 0x0002);
+            }
         }
 
         // ── Toggle Caps Lock ──────────────────────────────────────────────────
