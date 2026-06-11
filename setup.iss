@@ -1,7 +1,7 @@
 #define AppName    "Switch Input Language"
 #define AppVersion "3.1.0"
 #define AppExe     "SwitchInputLanguage.exe"
-#define AppPublisher "LAO Work Space"
+#define AppPublisher "LXRJ"
 
 [Setup]
 AppId={{A3F2C1D0-4B5E-4F6A-8C9D-1E2F3A4B5C6D}

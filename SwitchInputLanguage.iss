@@ -2,7 +2,7 @@
 AppName=Switch Input Language
 AppId={{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}
 AppVersion=3.1.0
-AppPublisher=LJ TECHNOLOGY
+AppPublisher=LXRJ
 AppPublisherURL=https://github.com/sumonchai/Switch-Input-Language
 AppSupportURL=https://github.com/sumonchai/Switch-Input-Language
 AppUpdatesURL=https://github.com/sumonchai/Switch-Input-Language
