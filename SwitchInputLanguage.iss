@@ -40,7 +40,7 @@ Name: "{group}\Uninstall Switch Input Language"; Filename: "{uninstallexe}"
 Name: "{userdesktop}\Switch Input Language"; Filename: "{app}\SwitchInputLanguage.exe"
 
 [Registry]
-Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "Switch Input Language"; ValueData: """{app}\SwitchInputLanguage.exe"""; Flags: uninsdeletevalue; Tasks: StartupTask
+Root: HKCU; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "SwitchInputLanguage"; ValueData: """{app}\SwitchInputLanguage.exe"""; Flags: uninsdeletevalue; Tasks: StartupTask
 
 [Tasks]
 Name: StartAfterInstall; Description: "Run application after install"
