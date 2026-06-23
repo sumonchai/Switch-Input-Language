@@ -45,8 +45,16 @@ namespace SwitchInputLanguage
             };
             startupItem.Click += (s, e) =>
             {
-                startupItem.Checked = !startupItem.Checked;
-                StartupHelper.SetStartup(startupItem.Checked, exePath);
+                bool newState = !startupItem.Checked;
+                bool ok = StartupHelper.SetStartup(newState, exePath);
+                if (ok)
+                {
+                    startupItem.Checked = newState;
+                }
+                else
+                {
+                    startupItem.Checked = StartupHelper.IsStartupEnabled();
+                }
             };
             menu.Items.Add(startupItem);
 

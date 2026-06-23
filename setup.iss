@@ -1,5 +1,5 @@
 #define AppName    "Switch Input Language"
-#define AppVersion "3.1.1"
+#define AppVersion "3.1.2"
 #define AppExe     "SwitchInputLanguage.exe"
 #define AppPublisher "LXRJ"
 
@@ -45,7 +45,7 @@ Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExe}"; IconFilename: "{app}\me
 Name: "{group}\Uninstall {#AppName}"; Filename: "{uninstallexe}"
 
 [Registry]
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "{#AppName}"; ValueData: """{app}\{#AppExe}"""; Flags: uninsdeletevalue; Tasks: startup
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "SwitchInputLanguage"; ValueData: """{app}\{#AppExe}"""; Flags: uninsdeletevalue; Tasks: startup
 
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "เปิดโปรแกรม"; Flags: nowait postinstall skipifsilent
