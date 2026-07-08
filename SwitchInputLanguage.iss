@@ -1,7 +1,7 @@
 [Setup]
 AppName=Switch Input Language
 AppId={{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}
-AppVersion=3.1.1
+AppVersion=3.1.2
 AppPublisher=LXRJ
 AppPublisherURL=https://github.com/sumonchai/Switch-Input-Language
 AppSupportURL=https://github.com/sumonchai/Switch-Input-Language
@@ -19,7 +19,7 @@ TimeStampsInUTC=yes
 TouchDate=none
 TouchTime=00:00
 OutputDir=dist
-OutputBaseFilename=SwitchInputLanguage-Setup-3.1.1-x64
+OutputBaseFilename=SwitchInputLanguage-Setup-3.1.2-x64
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 SetupIconFile=src\media\LJ LOGO.ico

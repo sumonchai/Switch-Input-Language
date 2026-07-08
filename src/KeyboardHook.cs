@@ -1,11 +1,22 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace SwitchInputLanguage
 {
     public class KeyboardHook : IDisposable
     {
+        // ── Log ────────────────────────────────────────────────────────────────
+        private static readonly string _logPath = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, "SwitchInputLanguage.log");
+        public  static bool Logging { get; set; } = false;
+        private static void Log(string msg)
+        {
+            if (!Logging) return;
+            try { File.AppendAllText(_logPath, $"{DateTime.Now:HH:mm:ss.fff} {msg}{Environment.NewLine}"); } catch { }
+        }
+
         // ── Hook ──────────────────────────────────────────────────────────────
         private const int  WH_KEYBOARD_LL = 13;
         private const int  WM_KEYDOWN     = 0x0100;
@@ -41,6 +52,9 @@ namespace SwitchInputLanguage
         [DllImport("user32.dll")] static extern bool   PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
         [DllImport("kernel32.dll")] static extern uint  GetCurrentThreadId();
         [DllImport("user32.dll")] static extern uint   SendInput(uint n, INPUT[] inputs, int size);
+        [DllImport("user32.dll")] static extern short  GetAsyncKeyState(int vKey);
+        [DllImport("user32.dll")] static extern bool   GetKeyboardState(byte[] lpKeyState);
+        [DllImport("user32.dll")] static extern bool   SetKeyboardState(byte[] lpKeyState);
         [DllImport("user32.dll")] static extern bool   SystemParametersInfo(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 
         // ── Structs ───────────────────────────────────────────────────────────
@@ -97,11 +111,18 @@ namespace SwitchInputLanguage
 
                 // injection ของเราเอง → ปล่อยผ่านทันที
                 if (kb.extra == OwnMark)
+                {
+                    Log($"INJECT pass-through vk={kb.vkCode:X2} flags={kb.flags:X8}");
                     return CallNextHookEx(_hook, nCode, wParam, lParam);
+                }
 
                 // ── CapsLock ───────────────────────────────────────────────
                 if (kb.vkCode == VK_CAPITAL)
                 {
+                    string evt = wParam == (IntPtr)WM_KEYDOWN ? "DOWN" : wParam == (IntPtr)WM_KEYUP ? "UP" : $"0x{wParam.ToInt64():X}";
+                    bool capsOn = (GetAsyncKeyState((int)VK_CAPITAL) & 0x0001) != 0;
+                    Log($"CAPSLOCK {evt} capsOn={capsOn} passthrough={Passthrough} paused={Paused} remote={IsForegroundRemoteDesktop()}");
+
                     if (Passthrough)
                         return CallNextHookEx(_hook, nCode, wParam, lParam);
 
@@ -121,10 +142,9 @@ namespace SwitchInputLanguage
                         _isDown = false;
                         double held = (DateTime.Now - _downTime).TotalMilliseconds;
                         bool shortPress = held < Settings.HoldMs;
+                        Log($"KEYUP held={held:F0}ms shortPress={shortPress} HoldMs={Settings.HoldMs}");
 
-                        if (remote)
-                            SendToRemote(shortPress);
-                        else if (shortPress)
+                        if (shortPress)
                             SwitchLanguage();
                         else
                             ToggleCapsLock();
@@ -139,6 +159,7 @@ namespace SwitchInputLanguage
         // ── เปลี่ยนภาษา ──────────────────────────────────────────────────────
         private static void SwitchLanguage()
         {
+            Log("SwitchLanguage() called");
             const uint HKL_NEXT = 1;
             IntPtr hWnd     = GetForegroundWindow();
             uint   fgThread = GetWindowThreadProcessId(hWnd, out _);
@@ -154,6 +175,35 @@ namespace SwitchInputLanguage
 
             // desktop / taskbar / no window
             ActivateKeyboardLayout((IntPtr)HKL_NEXT, KLF_ACTIVATE);
+
+            // ปิด CapsLock ผ่าน SetKeyboardState (ไม่ส่ง key event → RDP ไม่ forward)
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                System.Threading.Thread.Sleep(50);
+                ClearCapsLockState();
+            });
+        }
+
+        private static void ClearCapsLockState()
+        {
+            IntPtr hWnd = GetForegroundWindow();
+            if (hWnd == IntPtr.Zero) return;
+            uint fgThread = GetWindowThreadProcessId(hWnd, out _);
+            uint myThread = GetCurrentThreadId();
+            if (fgThread == 0 || fgThread == myThread) return;
+
+            AttachThreadInput(myThread, fgThread, true);
+            try
+            {
+                byte[] state = new byte[256];
+                if (GetKeyboardState(state))
+                {
+                    state[0x14] &= unchecked((byte)~1);  // clear bit 0 = CapsLock OFF
+                    SetKeyboardState(state);
+                    Log("ClearCapsLockState: SetKeyboardState called");
+                }
+            }
+            finally { AttachThreadInput(myThread, fgThread, false); }
         }
 
         // ── Toggle Caps Lock ──────────────────────────────────────────────────
@@ -174,6 +224,7 @@ namespace SwitchInputLanguage
 
         private static void SendToRemote(bool shortPress)
         {
+            Log($"SendToRemote(shortPress={shortPress})");
             System.Threading.Tasks.Task.Run(() =>
             {
                 System.Threading.Thread.Sleep(40);

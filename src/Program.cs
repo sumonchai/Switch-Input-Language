@@ -60,6 +60,18 @@ namespace SwitchInputLanguage
 
             menu.Items.Add(new ToolStripSeparator());
 
+            var logItem = new ToolStripMenuItem("เปิด Log (Debug)")
+            {
+                Checked = KeyboardHook.Logging
+            };
+            logItem.Click += (s, e) =>
+            {
+                KeyboardHook.Logging = !KeyboardHook.Logging;
+                logItem.Checked = KeyboardHook.Logging;
+            };
+            menu.Items.Add(logItem);
+
+            menu.Items.Add(new ToolStripSeparator());
             var passItem = new ToolStripMenuItem("ส่งต่อให้เครื่องรีโมท (Passthrough)")
             {
                 Checked = hook.Passthrough
