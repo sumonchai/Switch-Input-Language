@@ -26,13 +26,17 @@ namespace SwitchInputLanguage
             {
                 using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RunKey))
                 {
-                    return key?.GetValue(AppName) != null;
+                    if (key?.GetValue(AppName) is string value)
+                    {
+                        string path = value.Trim('"');
+                        return File.Exists(path);
+                    }
                 }
             }
             catch
             {
-                return false;
             }
+            return false;
         }
 
         private static bool ShortcutExists()
@@ -42,20 +46,18 @@ namespace SwitchInputLanguage
 
         public static bool SetStartup(bool enabled, string appPath)
         {
-            bool ok = true;
-
             if (enabled)
             {
-                ok &= SetRegistryEntry(true, appPath);
-                ok &= CreateShortcut(appPath);
+                bool regOk = SetRegistryEntry(true, appPath);
+                bool lnkOk = CreateShortcut(appPath);
+                return regOk || lnkOk;
             }
             else
             {
-                ok &= SetRegistryEntry(false, appPath);
-                ok &= RemoveShortcut();
+                bool regOk = SetRegistryEntry(false, appPath);
+                bool lnkOk = RemoveShortcut();
+                return regOk && lnkOk;
             }
-
-            return ok;
         }
 
         private static bool SetRegistryEntry(bool enabled, string appPath)
