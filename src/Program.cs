@@ -72,21 +72,13 @@ namespace SwitchInputLanguage
                 {
                     Checked = StartupHelper.IsStartupEnabled()
                 };
-                startupItem.Click += (s, e) =>
-                {
-                    bool newState = !startupItem.Checked;
-                    Log($"AUTOSTART: toggle to {newState}, exe={exePath}");
-                    bool ok = StartupHelper.SetStartup(newState, exePath);
-                    Log($"AUTOSTART: result={ok}, isEnabled={StartupHelper.IsStartupEnabled()}");
-                    if (ok)
-                    {
-                        startupItem.Checked = newState;
-                    }
-                    else
-                    {
-                        startupItem.Checked = StartupHelper.IsStartupEnabled();
-                    }
-                };
+            startupItem.Click += (s, e) =>
+            {
+                bool newState = !startupItem.Checked;
+                bool ok = StartupHelper.SetStartup(newState, exePath);
+                Program.Log($"AUTOSTART: toggle={newState} ok={ok} enabled={StartupHelper.IsStartupEnabled()}");
+                startupItem.Checked = ok ? newState : StartupHelper.IsStartupEnabled();
+            };
                 menu.Items.Add(startupItem);
 
                 menu.Items.Add(new ToolStripSeparator());

@@ -45,10 +45,9 @@ dotnet publish src/SwitchInputLanguage.csproj -c Release -r win-x64 --self-conta
 
 ## Auto-start
 
-- ลงทะเบียน 2 ทาง: `HKCU\...\Run\SwitchInputLanguage` + `Startup\SwitchInputLanguage.lnk`
-- Enable: อย่างใดอย่างหนึ่งสำเร็จก็พอ (`||`)
-- Disable: ต้องลบทั้งสองถึงจะถือว่าสำเร็จ (`&&`)
-- `IsStartupEnabled`: เช็ค path ใน registry ว่ามีไฟล์อยู่จริงด้วย (`File.Exists`)
+- ลงทะเบียนผ่าน Registry เท่านั้น: `HKCU\...\Run\SwitchInputLanguage`
+- ไม่ใช้ Shortcut (ถอดออกเพราะ WScript.Shell COM มีปัญหา)
+- `IsStartupEnabled`: เช็คค่าใน registry ว่ามีอยู่หรือเปล่า (ไม่ตรวจ File.Exists)
 
 ## ปัญหาบ่อย
 

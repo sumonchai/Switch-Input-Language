@@ -82,13 +82,10 @@ The installer reads from `out/` and compiles to `dist/`. Both `out/` and `dist/`
 
 ### Auto-start (StartupHelper.cs)
 
-**Two methods, either is sufficient:**
-1. **Registry:** `HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\SwitchInputLanguage` = `"<path>"` (primary)
-2. **Shortcut:** `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\SwitchInputLanguage.lnk` (backup)
-
-**Enable:** Returns true if **either** method succeeds (`regOk || lnkOk`).
-**Disable:** Returns true only if **both** methods clean up (`regOk && lnkOk`).
-**Check (`IsStartupEnabled`):** Validates the path in registry still exists (`File.Exists`), falls back to shortcut existence check.
+- **Method:** Registry only (`HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\SwitchInputLanguage` = `"<path>"`)
+- `IsStartupEnabled()` — checks if registry value exists (simple null check, no `File.Exists`)
+- `SetStartup(enabled, path)` — writes or deletes registry value; returns `bool`
+- No shortcut creation (removed in v3.1.2 to avoid WScript.Shell COM failures)
 
 The installer also offers a `[Tasks] StartupTask` option (line 47 in .iss) that writes the same registry value.
 
