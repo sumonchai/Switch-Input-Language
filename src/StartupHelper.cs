@@ -28,8 +28,8 @@ namespace SwitchInputLanguage
                 {
                     if (key?.GetValue(AppName) is string value)
                     {
-                        string path = value.Trim('"');
-                        return File.Exists(path);
+                        Program.Log($"STARTUP: registry entry found: {value}");
+                        return true;
                     }
                 }
             }
@@ -66,16 +66,24 @@ namespace SwitchInputLanguage
             {
                 using (RegistryKey key = Registry.CurrentUser.OpenSubKey(RunKey, true))
                 {
-                    if (key == null) return false;
+                    if (key == null) { Program.Log("STARTUP: OpenSubKey(RunKey, writable) returned null"); return false; }
                     if (enabled)
-                        key.SetValue(AppName, "\"" + appPath + "\"");
+                    {
+                        string val = "\"" + appPath + "\"";
+                        key.SetValue(AppName, val);
+                        Program.Log($"STARTUP: registry set: {AppName} = {val}");
+                    }
                     else
+                    {
                         key.DeleteValue(AppName, false);
+                        Program.Log($"STARTUP: registry deleted: {AppName}");
+                    }
                 }
                 return true;
             }
             catch (Exception ex)
             {
+                Program.Log($"STARTUP: registry error: {ex.Message}");
                 MessageBox.Show(
                     "ไม่สามารถเขียน Registry AutoRun:\n" + ex.Message,
                     "Switch Input Language",
@@ -99,10 +107,12 @@ namespace SwitchInputLanguage
                 shortcut.Description = "Switch Input Language";
                 shortcut.Save();
 
+                Program.Log($"STARTUP: shortcut created: {path} -> {appPath}");
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Program.Log($"STARTUP: shortcut error: {ex.Message}");
                 return false;
             }
         }
@@ -113,11 +123,15 @@ namespace SwitchInputLanguage
             {
                 string path = StartupShortcutPath;
                 if (File.Exists(path))
+                {
                     File.Delete(path);
+                    Program.Log($"STARTUP: shortcut deleted: {path}");
+                }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Program.Log($"STARTUP: shortcut delete error: {ex.Message}");
                 return false;
             }
         }

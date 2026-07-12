@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SwitchInputLanguage
@@ -9,83 +10,120 @@ namespace SwitchInputLanguage
     {
         private const string MutexName = "SwitchInputLanguage_SingleInstance";
 
+        public static string LogPath { get; } =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SwitchInputLanguage", "startup.log");
+
+        public static void Log(string msg)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(LogPath));
+                File.AppendAllText(LogPath,
+                    $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} {msg}{Environment.NewLine}");
+            }
+            catch { }
+        }
+
         [STAThread]
         static void Main()
         {
             var mutex = new System.Threading.Mutex(true, MutexName, out bool isNew);
-            if (!isNew) return;
+            if (!isNew) { Log("MUTEX: already running, exit"); return; }
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            Log("START: v" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
 
-            Settings.Load();
-            using var hook = new KeyboardHook();
-
-            var tray = new NotifyIcon
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
-                Text    = "Switch Input Language\nCaps Lock = เปลี่ยนภาษา",
-                Icon    = LoadIcon(),
-                Visible = true,
+                Log("CRASH: " + e.ExceptionObject);
+                MessageBox.Show("เกิดข้อผิดพลาด:\n" + e.ExceptionObject,
+                    "Switch Input Language", MessageBoxButtons.OK, MessageBoxIcon.Error);
             };
 
-            string exePath = Application.ExecutablePath;
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-            var menu = new ContextMenuStrip();
-            menu.Items.Add("ตั้งค่า Hold Duration...", null, (s, e) =>
-            {
-                hook.Paused = true;
-                new SettingsForm().ShowDialog();
-                hook.Paused = false;
-                hook.ResetState();
-            });
+                Settings.Load();
+                Log("HOOK: installing...");
+                using var hook = new KeyboardHook();
+                Log("HOOK: OK");
 
-            var startupItem = new ToolStripMenuItem("เริ่มต้นพร้อม Windows")
-            {
-                Checked = StartupHelper.IsStartupEnabled()
-            };
-            startupItem.Click += (s, e) =>
-            {
-                bool newState = !startupItem.Checked;
-                bool ok = StartupHelper.SetStartup(newState, exePath);
-                if (ok)
+                var tray = new NotifyIcon
                 {
-                    startupItem.Checked = newState;
-                }
-                else
+                    Text    = "Switch Input Language\nCaps Lock = เปลี่ยนภาษา",
+                    Icon    = LoadIcon(),
+                    Visible = true,
+                };
+
+                string exePath = Application.ExecutablePath;
+
+                var menu = new ContextMenuStrip();
+                menu.Items.Add("ตั้งค่า Hold Duration...", null, (s, e) =>
                 {
-                    startupItem.Checked = StartupHelper.IsStartupEnabled();
-                }
-            };
-            menu.Items.Add(startupItem);
+                    hook.Paused = true;
+                    new SettingsForm().ShowDialog();
+                    hook.Paused = false;
+                    hook.ResetState();
+                });
 
-            menu.Items.Add(new ToolStripSeparator());
+                var startupItem = new ToolStripMenuItem("เริ่มต้นพร้อม Windows")
+                {
+                    Checked = StartupHelper.IsStartupEnabled()
+                };
+                startupItem.Click += (s, e) =>
+                {
+                    bool newState = !startupItem.Checked;
+                    Log($"AUTOSTART: toggle to {newState}, exe={exePath}");
+                    bool ok = StartupHelper.SetStartup(newState, exePath);
+                    Log($"AUTOSTART: result={ok}, isEnabled={StartupHelper.IsStartupEnabled()}");
+                    if (ok)
+                    {
+                        startupItem.Checked = newState;
+                    }
+                    else
+                    {
+                        startupItem.Checked = StartupHelper.IsStartupEnabled();
+                    }
+                };
+                menu.Items.Add(startupItem);
 
-            var passItem = new ToolStripMenuItem("ส่งต่อให้เครื่องรีโมท (Passthrough)")
-            {
-                Checked = hook.Passthrough
-            };
-            passItem.Click += (s, e) =>
-            {
-                passItem.Checked = !passItem.Checked;
-                hook.Passthrough = passItem.Checked;
-                hook.ResetState();
-            };
-            menu.Items.Add(passItem);
+                menu.Items.Add(new ToolStripSeparator());
 
-            menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add("ตรวจหาการอัปเดต...", null, (s, e) =>
-            {
-                UpdateChecker.CheckForUpdate(null);
-            });
-            menu.Items.Add("เกี่ยวกับ", null, (s, e) =>
-                Process.Start(new ProcessStartInfo("https://github.com/sumonchai/Switch-Input-Language") { UseShellExecute = true }));
-            menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add("ออก", null, (s, e) => Application.Exit());
-            tray.ContextMenuStrip = menu;
+                var passItem = new ToolStripMenuItem("ส่งต่อให้เครื่องรีโมท (Passthrough)")
+                {
+                    Checked = hook.Passthrough
+                };
+                passItem.Click += (s, e) =>
+                {
+                    passItem.Checked = !passItem.Checked;
+                    hook.Passthrough = passItem.Checked;
+                    hook.ResetState();
+                };
+                menu.Items.Add(passItem);
 
-            Application.ApplicationExit += (s, e) => { tray.Visible = false; tray.Dispose(); };
-            Application.Run();
+                menu.Items.Add(new ToolStripSeparator());
+                menu.Items.Add("ตรวจหาการอัปเดต...", null, (s, e) =>
+                {
+                    UpdateChecker.CheckForUpdate(null);
+                });
+                menu.Items.Add("เกี่ยวกับ", null, (s, e) =>
+                    Process.Start(new ProcessStartInfo("https://github.com/sumonchai/Switch-Input-Language") { UseShellExecute = true }));
+                menu.Items.Add(new ToolStripSeparator());
+                menu.Items.Add("ออก", null, (s, e) => Application.Exit());
+                tray.ContextMenuStrip = menu;
+
+                Application.ApplicationExit += (s, e) => { tray.Visible = false; tray.Dispose(); };
+                Application.Run();
+            }
+        catch (Exception ex)
+        {
+            Log("FATAL: " + ex);
+            MessageBox.Show("ข้อผิดพลาดร้ายแรง:\n" + ex.Message,
+                "Switch Input Language", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
 
         static Icon LoadIcon()
         {
