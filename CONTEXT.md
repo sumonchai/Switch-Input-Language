@@ -49,6 +49,10 @@ dotnet publish src/SwitchInputLanguage.csproj -c Release -r win-x64 --self-conta
 - ไม่ใช้ Shortcut (ถอดออกเพราะ WScript.Shell COM มีปัญหา)
 - `IsStartupEnabled`: เช็คค่าใน registry ว่ามีอยู่หรือเปล่า (ไม่ตรวจ File.Exists)
 
+### กฎห้ามแก้ (CRITICAL)
+- **ห้ามแก้ไข auto-start logic** เว้นแต่ user ร้องขอโดยตรง
+- Registry อย่างเดียว (v3.1.1 ที่ใช้ได้) — ถ้าเปลี่ยนอะไรกลับมาเสียอีก
+
 ## ปัญหาบ่อย
 
 - Auto-start ไม่ติดหลัง reboot → เช็ค Task Manager "Startup" tab, เช็ค path ใน registry
