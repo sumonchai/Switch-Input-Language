@@ -134,6 +134,12 @@ Version is set in **three places** — keep all in sync:
 - `Passthrough` mode: CapsLock passes through untouched (tray menu toggle)
 - `Paused` mode: CapsLock suppressed entirely (during Settings dialog)
 
+### Auto-start rule (CRITICAL)
+- Uses **Registry only** (`HKCU\...\Run\SwitchInputLanguage`)
+- No shortcut creation (WScript.Shell COM removed due to reliability issues)
+- `IsStartupEnabled()` checks only if registry value exists — no `File.Exists` validation
+- **Do NOT modify auto-start logic unless specifically requested** — reverting to the v3.1.1 proven approach fixed it, and any changes risk breaking it again
+
 ## Installer (Inno Setup)
 
 - `PrivilegesRequired=lowest` — installs per-user without admin
